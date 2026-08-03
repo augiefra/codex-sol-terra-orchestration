@@ -1,83 +1,65 @@
 # Verification
 
-Static configuration is not proof of runtime execution. Verification has three
-levels: syntax, agent discovery, and actual parent/child rollouts.
+Static configuration proves intent, not execution. Verify syntax, routing
+rules, then the actual parent and child runtime.
 
 ## 1. Static verification
 
-From the repository root:
+From the repository root, run:
 
 ```bash
 python3 scripts/verify_install.py
 ```
 
-Expected checks:
+It checks that `config.toml` parses, Sol High is the parent default, native
+multi-agent tools and agents are enabled, Terra High is the default subagent,
+the concurrency ceiling is 10, no catalog or internal V2 setting is present,
+and global routing rules preserve the safeguards.
 
-- user `config.toml` parses;
-- top-level default is Luna with effort Max;
-- multi-agent and agent tables are enabled;
-- the default subagent is Luna Max;
-- `luna_worker.toml` exists under the exact filename and parses;
-- the worker pins Luna Max;
-- the global `AGENTS.md` contains the core routing, `fork_turns="none"`,
-  two-failure, one-owner, and runtime-identification rules;
-- any configured model catalog exists and reports its Luna compatibility value.
+## 2. Clean native runtime smoke test
 
-## 2. Clean runtime smoke test
-
-Create a new projectless task explicitly in Sol High and use this prompt:
+Create a projectless task using Sol High and send:
 
 ```text
 ROUTING SMOKE TEST ONLY. Do not modify files or external systems.
 
-Remain the Sol High parent. Spawn exactly one custom agent with
-agent_type="luna_worker" and fork_turns="none".
+Remain the Sol High parent. Spawn exactly one native subagent using the
+configured default, with no custom agent type and no explicit model override.
 
-Give the child this bounded read-only packet:
-- compute the SHA-256 of the ASCII string SOL-LUNA-ROUTING-2026 without a
+Give it this bounded read-only packet:
+- compute the SHA-256 of the ASCII string SOL-TERRA-ROUTING-2026 without a
   trailing newline using one local command;
 - return the command and hash;
 - independently identify its actual model and effort from its own exact
-  runtime rollout using its own CODEX_THREAD_ID;
-- end with Model : <Model> <effort>.
+  runtime rollout using its own CODEX_THREAD_ID when available;
+- end with Model : <Modèle> <effort>.
 
 After the child returns, verify the hash with a different local command.
 Independently identify the parent's actual model and effort from the parent's
 own exact rollout. Report parent identity, child identity, matching hash, and
-whether routing succeeded.
+whether native routing succeeded.
 ```
 
 Expected hash:
 
 ```text
-af690a40d33623049c759135ca4dcbc0fc48c0c4a2d0f2e08ef90ac7e83567aa
+1434122404ff5d83c87855466ede236b41c4388504b19ece93edb214228532ab
 ```
 
-Expected runtime:
+Expected runtime, unless a user deliberately selected another model or an
+explicit spawn override was used:
 
 ```text
 Parent: gpt-5.6-sol / high
-Child:  gpt-5.6-luna / max
+Child:  gpt-5.6-terra / high
 ```
 
-## 3. Existing-thread smoke test
+## 3. Existing-thread test
 
-Repeat a bounded read-only task in an existing architecture thread with a long
-history. The spawn must explicitly use `fork_turns="none"`.
-
-Example packet:
-
-```text
-Objective: report the current repository path and minimal Git status.
-Authorized commands: pwd, git rev-parse --is-inside-work-tree,
-git status --short --branch.
-Mutations: none.
-Validation: the parent repeats all three commands independently.
-Return conditions: any error or ambiguity.
-```
-
-This test catches the common failure where a custom agent is accidentally
-combined with a full-history fork.
+Repeat one bounded read-only task in an established Sol-led thread. The child
+prompt must still include objective, scope, authorized commands, no-mutation
+boundary, exact validation, and return conditions. This proves the native
+communication path handles context without relying on a custom profile.
 
 ## 4. Exact runtime identity
 
@@ -87,26 +69,9 @@ For the current process only:
 python3 scripts/inspect_runtime_model.py
 ```
 
-The helper requires `CODEX_THREAD_ID`, finds candidates by filename, validates
-the exact `session_meta.payload.id`, and reads the latest `turn_context`.
+The helper requires `CODEX_THREAD_ID`, finds filename candidates, validates
+the exact `session_meta.payload.id`, and then reads the latest `turn_context`.
+It fails closed if it cannot prove one exact current rollout.
 
-It must fail closed if:
-
-- the environment variable is absent;
-- no exact session match exists;
-- more than one exact session match exists;
-- the rollout has no `turn_context`;
-- the model or effort is missing.
-
-## Evidence standard
-
-The following are not sufficient proof by themselves:
-
-- `model = ...` in `config.toml`;
-- model settings in a custom-agent TOML;
-- an agent role named `luna_worker`;
-- a prompt asking for Sol or Luna;
-- a hard-coded footer;
-- the `/root` role name.
-
-The validated current process rollout is the source of truth for this workflow.
+The following alone are insufficient proof: a config value, a request to
+delegate, a hard-coded footer, the `/root` role, or a task name.

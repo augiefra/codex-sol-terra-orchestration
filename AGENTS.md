@@ -9,14 +9,10 @@ routing instructions installed into a user's Codex configuration.
   paths, environment fingerprints, or private instructions into this repo.
 - Keep the default installation merge-based. Never tell Codex to overwrite an
   existing global configuration wholesale.
-- Label undocumented flags and the model-catalog workaround as observed,
-  version-dependent behavior rather than official OpenAI API guarantees.
-- Keep every verification script read-only by default. Any script that writes
-  a workaround must require an explicit command and refuse unsafe ambiguity.
+- Keep every verification script read-only by default.
 - Prefer runtime evidence from `turn_context` over claims inferred from a
   requested model, a role name, or a configuration file.
-- Preserve the core topology: Luna Max is the economical default for routine
-  work; architecture threads are explicitly run with Sol High; Sol delegates
-  independent bounded work back to a single Luna Max custom agent.
-- Do not add more custom agent profiles unless a proven technical constraint
-  requires them.
+- Preserve the core topology: Sol High owns the parent thread; native Terra
+  High subagents handle independent, bounded work through Codex multi-agent
+  communication. Do not add a custom agent profile unless a proven technical
+  constraint requires it; stop and raise that constraint before doing so.

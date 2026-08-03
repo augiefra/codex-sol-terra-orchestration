@@ -1,56 +1,42 @@
 # Official sources and evidence boundaries
 
-This workflow combines official Codex capabilities with a community routing
-policy and locally observed runtime behavior. Keep those layers separate.
+This repository combines documented Codex capabilities with a local operating
+policy. They are deliberately separate.
 
-## Officially documented capabilities
+## Official documentation
 
-- [Codex configuration basics](https://learn.chatgpt.com/docs/config-file/config-basic)
+- [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+  documents local subagent workflows, model and reasoning choice, and guidance
+  to use `gpt-5.6-terra` for faster, lower-cost lighter subagent work.
 - [Codex configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
-- [Sample Codex configuration](https://learn.chatgpt.com/docs/config-file/config-sample)
-- [`AGENTS.md` instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
-- [Codex subagents and custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents)
-- [Sandboxing](https://learn.chatgpt.com/docs/sandboxing)
-- [Agent approvals and security](https://learn.chatgpt.com/docs/agent-approvals-security)
-- [GPT-5.6 Sol model](https://developers.openai.com/api/docs/models/gpt-5.6-sol)
-- [GPT-5.6 Luna model](https://developers.openai.com/api/docs/models/gpt-5.6-luna)
-- [Latest model guidance](https://developers.openai.com/api/docs/guides/latest-model)
-- [Responses API Multi-agent](https://developers.openai.com/api/docs/guides/responses-multi-agent)
+  documents `features.multi_agent`, `[agents]`, default subagent model and
+  effort, the concurrency ceiling, and spawn-time precedence.
+- [Advancing the price-performance frontier with GPT-5.6](https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/)
+  announces a 20% Terra price reduction effective July 30, 2026 and says the
+  lower price is reflected in paid-subscription usage accounting for Codex and
+  ChatGPT Work. It does not claim that every task uses 20% fewer tokens.
 
-Official documentation supports user/project configuration, layered
-`AGENTS.md` instructions, custom agents under user or project directories,
-per-agent model and reasoning settings, and sandbox/approval controls.
+These are the sources for every configuration key used by this repository.
 
-## Community policy in this repository
+## Guidance distinct from official documentation
 
-The following are this repository's operating decisions, not universal OpenAI
-rules:
+[Eric Provencher's post on X](https://x.com/pvncher/status/2083300990350954981)
+may be useful practical guidance from a Codex team member. It is not a
+substitute for the official documentation and does not create a compatibility
+or performance guarantee.
 
-- Luna Max as the economical global default;
-- explicitly selecting Sol High for architecture threads;
-- one custom agent named `luna_worker`;
-- the exact task packet and escalation gates;
-- the two-failed-attempt rule;
-- one writable owner per file;
-- the final `Model : <Model> <effort>` convention;
-- using `CODEX_THREAD_ID` and exact rollout matching as runtime proof.
+## Repository policy
 
-## Version-dependent local observations
+The following are workflow choices made by this repository, not universal
+OpenAI rules:
 
-The following were observed in a tested Codex Desktop build and must be
-revalidated after updates:
+- Sol High is the parent orchestrator for the documented topology;
+- Terra High is the default native subagent;
+- routing considers difficulty and risk instead of size alone;
+- a batch assigns one writable owner per file;
+- a child stops after two distinct evidence-based failures or on a protected
+  boundary;
+- final responses identify actual runtime when it can be proven.
 
-- the `[features.multi_agent_v2]` keys used by this setup;
-- `fork_turns="none"` for custom-agent spawns in the active delegation tool;
-- the local availability of Luna Max and Sol High labels;
-- `CODEX_THREAD_ID` in local task environments;
-- the local rollout JSONL structure;
-- a cached Luna V1 entry being filtered while a locally patched V2 entry was
-  accepted.
-
-## Important API distinction
-
-Local Codex custom agents can have their own model settings. The Responses API
-Multi-agent beta is a separate feature and currently documents a shared request
-model/tool context. Do not claim that this local Sol/Luna topology describes
-the API feature.
+The repository does not prescribe a model catalog, compatibility patch,
+internal feature flag, or custom agent profile.

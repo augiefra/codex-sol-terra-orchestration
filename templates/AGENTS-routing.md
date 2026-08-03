@@ -1,85 +1,60 @@
-<!-- codex-sol-luna-orchestration:v1 -->
+<!-- codex-sol-terra-orchestration:v1 -->
 
 ## Model identification
 
 - End every completed task with a final line exactly formatted as
-  `Model : <Model> <effort>`, for example `Model : Sol High` or
-  `Model : Luna Max`.
+  `Model : <Modèle> <effort>`, for example `Model : Sol High` or
+  `Model : Terra High`.
 - Report the model and reasoning effort actually used for the turn, not merely
-  the requested or default profile.
+  the requested configuration or default.
 - Prefer directly injected runtime metadata such as `turn_context` or
   `thread_settings_applied`.
 - If those metadata are not directly visible and local shell access plus
-  `CODEX_THREAD_ID` are available, locate your own rollout read-only under the
-  Codex sessions directory. Retain a candidate only when
-  `session_meta.payload.id` is structurally equal to your own
-  `CODEX_THREAD_ID`, then read the latest `turn_context` for the actual model
-  and effort.
-- Never select a rollout only because it contains the ID, has the newest
-  modification time, or has a plausible filename. A parent or child rollout
-  may mention another thread's UUID.
-- Never infer the actual model from `config.toml`, global instructions, the
-  `/root` role, task type, custom-agent name, or what should theoretically have
-  run.
-- If neither direct runtime metadata nor an exact validated rollout can prove
-  the identity, write `Model : non exposed by the runtime` rather than
-  inventing it.
-- Keep the model line as the last line of the final response.
+  `CODEX_THREAD_ID` are available, locate the current process rollout
+  read-only. Retain a candidate only when
+  `session_meta.payload.id == CODEX_THREAD_ID`, then read the latest
+  `turn_context` for model and effort.
+- Never use a recency guess, filename guess, `config.toml`, an agent role, or
+  the `/root` role as runtime proof. If proof is unavailable, write
+  `Model : non exposé par le runtime`.
+- Keep that model line as the last line of the final response.
 
-## Delegation contract
+## Native delegation contract
 
-- Use the single global custom agent `luna_worker` for delegated subtasks.
-- When the delegation tool exposes an agent type, explicitly select
-  `agent_type = "luna_worker"`.
-- Launch a custom `luna_worker` with `fork_turns = "none"` and send a
-  self-contained delegation packet. Do not combine a custom agent with a full
-  fork of the parent history.
-- The packet must define: objective, scope, boundaries, authorized actions,
-  invariants, expected result, exact validation, writable files with one owner
-  per file, and precise conditions for returning to the parent.
-- Include the runtime-identification/footer rule in the child message because
-  global instructions may not propagate to the child runtime.
-- Use the minimum useful number of subagents. Do not delegate a trivial local
-  fix merely to demonstrate delegation.
-- Parallelize only genuinely independent, objectively verifiable packets with
-  disjoint writable files. Two agents must never modify the same file in one
-  batch.
-- Start read-only unless mutation is explicitly authorized.
-- External mutation, publication, production changes, commits, pushes, and
-  deployments require both explicit user authorization and an in-scope
-  instruction from the parent. A parent instruction never creates authority
-  the user did not grant.
+- Sol High is the parent orchestrator: it frames the objective, grants only
+  user-authorized scope, makes architecture/product/security/production
+  decisions, reviews evidence, and concludes.
+- Use native Codex subagents. The default configuration makes an unpinned
+  native subagent Terra High; do not require a custom-agent profile.
+- Delegate only independent, bounded work. Give every child: objective,
+  relevant context, in/out-of-scope boundaries, authorized actions,
+  invariants, expected result, exact validation, and its owned writable files.
+- One file has one owner in a batch. Parallelize only when scopes and
+  validations are genuinely independent. Do not delegate a trivial local fix
+  merely to demonstrate delegation.
+- Start read-only unless a parent explicitly authorizes a mutation. A parent
+  cannot grant authority beyond what the user granted.
+- External mutations, publication, production changes, commits, pushes, and
+  deployments require both explicit user authorization and an in-scope parent
+  instruction.
+- A child returns immediately if the work becomes materially ambiguous,
+  depends on an unresolved decision, crosses its boundaries, affects security,
+  authentication, authorization, data integrity, a destructive migration, or
+  a public/cross-system contract.
+- After two distinct evidence-based attempts fail, stop further attempts and
+  return evidence, remaining plausible hypotheses, and the exact blocker to
+  Sol.
 
 ## Routing
 
-- A model explicitly selected by the user in the Codex UI, Chrome extension,
-  CLI, task settings, or creation call takes precedence over this default
-  routing. Never silently replace that choice.
-- Use Luna Max as the economical global default for routine, repeatable,
-  token-heavy, or objectively verifiable work.
-- Explicitly select Sol High for architecture threads, cross-system decisions,
-  authorization, arbitration, product/security/production judgment, heavy
-  coding, evidence review, and final acceptance.
-- Inside a Sol High architecture thread, prefer `luna_worker` for independent
-  repository/document/log exploration, web research, browser inspection,
-  bounded console operations, targeted tests, deterministic transformations,
-  and small changes already decided by Sol.
-- Do not ask the user to choose a worker profile. Infer whether delegation is
-  useful from the objective while keeping the selected parent model in control
-  of the work and conclusion.
-- Do not use Terra unless the user explicitly requests it or a verified
-  technical constraint requires it.
-
-## Escalation gates
-
-- Evaluate delegation by reasoning difficulty, ambiguity, blast radius,
-  reversibility, and objective verifiability—not by task size alone.
-- A large deterministic mechanical task may fit Luna. A small high-impact
-  security or contract change may require Sol.
-- `luna_worker` must stop and return the exact issue to the parent when the
-  mission becomes materially ambiguous, depends on an unresolved decision,
-  crosses its boundaries, or affects security, authentication, authorization,
-  data integrity, destructive migrations, or a public/cross-system contract.
-- After two distinct evidence-based attempts fail, stop further attempts and
-  return the evidence, remaining plausible hypotheses, and blocker to the
-  parent. In a Sol-led architecture thread, the next decision belongs to Sol.
+- A model explicitly selected by the user takes precedence over defaults.
+  Never silently replace it.
+- In the default topology, Sol High leads the parent thread. Terra High is the
+  native default for independent exploration, read-heavy scans, supporting
+  documents, bounded implementation already decided by Sol, tests, and
+  evidence collection.
+- Choose delegation by reasoning difficulty, ambiguity, blast radius,
+  reversibility, security/data risk, objective verifiability, and ownership —
+  never by task size alone.
+- Terra is selected for speed and efficiency on suitably bounded work; this is
+  not a guarantee of a fixed percentage saving or speedup.

@@ -1,64 +1,46 @@
 # Manual installation
 
-Use this path only if you understand TOML merging and can inspect diffs. The
-Codex-assisted flow is safer for configurations that already contain several
-tables, MCP servers, plugins, projects, or managed settings.
+Use this path only if you can merge TOML and inspect a diff. The Codex-assisted
+flow is safer when the configuration already includes several tables, MCP
+servers, plugins, projects, or managed settings.
 
-## 1. Back up the target files
+## 1. Back up only the target files
 
-Create recoverable timestamped copies of only the files that already exist and
-will be changed:
+Create timestamped, recoverable copies of existing files only when you will
+change them:
 
 ```text
 ~/.codex/config.toml
 ~/.codex/AGENTS.md
-~/.codex/agents/luna_worker.toml
 ```
 
-Do not include credentials, caches, catalogs, or session rollouts in a public
-bug report or commit.
+Never include credentials, caches, catalogs, or session rollouts in a public
+report or commit.
 
 ## 2. Merge the configuration fragment
 
-Open [`../templates/config.fragment.toml`](../templates/config.fragment.toml).
-Merge its top-level `model` values and the individual keys from `[features]`,
-`[features.multi_agent_v2]`, and `[agents]` into existing tables.
+Open [templates/config.fragment.toml](../templates/config.fragment.toml) and
+merge its top-level values plus the values in `[features]` and `[agents]` into
+matching existing tables. Do not paste the fragment at the end when the table
+is already present: duplicate TOML keys or tables are invalid.
 
-Do not paste the fragment at the end if those tables already exist. Duplicate
-TOML keys or tables are invalid.
+The fragment sets Sol High as the parent default, enables native multi-agent
+tools, and sets Terra High as the native default subagent. It adds no custom
+agent, catalog override, or internal feature table.
 
-## 3. Install the custom agent
+## 3. Merge routing rules
 
-Copy [`../templates/luna_worker.toml`](../templates/luna_worker.toml) to:
+Merge [templates/AGENTS-routing.md](../templates/AGENTS-routing.md) into
+`~/.codex/AGENTS.md`, preserving unrelated user instructions.
 
-```text
-~/.codex/agents/luna_worker.toml
-```
+## 4. Validate and smoke-test
 
-Review the developer instructions before installing them globally.
-
-## 4. Merge the global routing rules
-
-Merge [`../templates/AGENTS-routing.md`](../templates/AGENTS-routing.md) into
-`~/.codex/AGENTS.md`. Preserve every unrelated user instruction.
-
-## 5. Validate statically
-
-Run:
+From this repository root:
 
 ```bash
 python3 scripts/verify_install.py
 ```
 
-The verifier is read-only. Resolve every error before restarting Codex.
-
-## 6. Restart and smoke-test
-
-Fully restart Codex Desktop or open a fresh task, then follow
-[`VERIFICATION.md`](VERIFICATION.md).
-
-## 7. Use Sol High intentionally
-
-The global default is Luna Max. For an architecture or high-impact thread,
-select Sol High explicitly in the UI, CLI, thread settings, or thread-creation
-call. That explicit selection must remain the primary model for that thread.
+Resolve all errors, restart Codex only if required, then follow
+[VERIFICATION.md](VERIFICATION.md). An explicit model selection by the user
+still takes precedence over the defaults.

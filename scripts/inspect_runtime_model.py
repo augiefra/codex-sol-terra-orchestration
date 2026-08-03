@@ -53,6 +53,7 @@ def friendly_model(model: str) -> str:
     known = {
         "gpt-5.6-sol": "Sol",
         "gpt-5.6-terra": "Terra",
+        # Manual model selection still takes precedence over routing defaults.
         "gpt-5.6-luna": "Luna",
     }
     return known.get(model, model)

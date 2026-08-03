@@ -14,25 +14,20 @@ does not provide a security boundary.
 - Start delegated exploration in read-only mode whenever possible.
 - Do not enable network access, `danger-full-access`, approval bypasses, or
   equivalent `--yolo` behavior as part of this workflow.
-- Never publish model caches or catalogs. They can contain internal model
-  messages, client metadata, hashes, timestamps, and machine-specific state.
+- Never publish model caches. They can contain internal model messages, client
+  metadata, hashes, timestamps, and machine-specific state.
 - Never publish credentials, OAuth state, connector IDs, project paths,
   trusted-project lists, browser fingerprints, or local executable paths.
 - Do not treat `AGENTS.md` as a substitute for sandboxing and approvals.
 - Do not infer the effective model or permissions from configuration alone;
   verify the actual runtime when it matters.
 
-## Catalog workaround
+## Native configuration only
 
-The optional Luna v1→v2 catalog edit is unsupported by official OpenAI
-documentation. It can become stale after any Codex update and may cause the
-client to load obsolete model metadata. It must never run automatically during
-normal installation.
-
-Use native support first. If a workaround is still required, derive a new
-catalog from the current machine's fresh `models_cache.json`, change only the
-single Luna compatibility field, validate the result, and retest after every
-Codex update.
+This workflow intentionally uses documented native multi-agent settings. Do
+not add an internal feature flag, model catalog override, or custom agent as a
+fallback. If native support is unavailable, preserve the current configuration
+and investigate the client version, managed policy, and documented settings.
 
 ## Reporting a security issue
 
