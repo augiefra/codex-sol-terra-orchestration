@@ -100,9 +100,12 @@ Configuration is intent, not proof. When runtime metadata is available, the
 workflow identifies the current process from its exact `CODEX_THREAD_ID`:
 
 ```text
-CODEX_THREAD_ID -> matching session_meta.payload.id -> latest turn_context
-                -> actual model + effort
+CODEX_THREAD_ID -> first session_meta.payload.id of owning rollout
+                -> latest turn_context -> actual model + effort
 ```
+
+The first-event rule matters because a subagent rollout can embed its parent's
+`session_meta` later in inherited history.
 
 Use [scripts/inspect_runtime_model.py](scripts/inspect_runtime_model.py) as a
 read-only helper. If direct metadata and an exact rollout cannot prove the

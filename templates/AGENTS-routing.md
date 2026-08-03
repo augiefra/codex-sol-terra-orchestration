@@ -11,11 +11,12 @@
   `thread_settings_applied`.
 - If those metadata are not directly visible and local shell access plus
   `CODEX_THREAD_ID` are available, locate the current process rollout
-  read-only. Retain a candidate only when
-  `session_meta.payload.id == CODEX_THREAD_ID`, then read the latest
-  `turn_context` for model and effort.
+  read-only. Retain a candidate only when its first `session_meta` event has
+  `payload.id == CODEX_THREAD_ID`, then read the latest `turn_context` for
+  model and effort. A child rollout may embed the parent's `session_meta`
+  later in inherited history, so a match anywhere else is not ownership proof.
 - Never use a recency guess, filename guess, `config.toml`, an agent role, or
-  the `/root` role as runtime proof. If proof is unavailable, write
+  the `/root` role as runtime proof. If ownership proof is unavailable, write
   `Model : non exposé par le runtime`.
 - Keep that model line as the last line of the final response.
 

@@ -64,10 +64,13 @@ the current runtime from the exact rollout:
 
 ```text
 CODEX_THREAD_ID
-  -> exact session_meta.payload.id match
+  -> exact match with the first session_meta.payload.id
   -> latest turn_context
   -> model + effort
 ```
+
+Only the first `session_meta` establishes rollout ownership. A child rollout
+can contain the parent's `session_meta` later in inherited history.
 
 The response footer is always the final line and reports the proven runtime;
 otherwise it says `Model : non exposé par le runtime`.

@@ -70,8 +70,10 @@ python3 scripts/inspect_runtime_model.py
 ```
 
 The helper requires `CODEX_THREAD_ID`, finds filename candidates, validates
-the exact `session_meta.payload.id`, and then reads the latest `turn_context`.
-It fails closed if it cannot prove one exact current rollout.
+that the first `session_meta.payload.id` belongs to the current process, and
+then reads the latest `turn_context`. It fails closed if it cannot prove one
+exact current rollout. A later inherited parent `session_meta` inside a child
+rollout is deliberately ignored for ownership.
 
 The following alone are insufficient proof: a config value, a request to
 delegate, a hard-coded footer, the `/root` role, or a task name.

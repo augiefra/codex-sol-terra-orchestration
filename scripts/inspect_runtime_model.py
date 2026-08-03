@@ -2,7 +2,7 @@
 """Print the current Codex process model from its exact local rollout.
 
 Read-only. The script fails closed when it cannot prove a unique match between
-CODEX_THREAD_ID and session_meta.payload.id.
+CODEX_THREAD_ID and the owning rollout's first session_meta.payload.id.
 """
 
 from __future__ import annotations
@@ -25,7 +25,7 @@ def codex_home() -> Path:
 
 
 def parse_rollout(path: Path, thread_id: str) -> tuple[bool, dict[str, Any] | None]:
-    exact_session = False
+    owner_session_id: str | None = None
     latest_context: dict[str, Any] | None = None
 
     try:
@@ -36,9 +36,11 @@ def parse_rollout(path: Path, thread_id: str) -> tuple[bool, dict[str, Any] | No
                 except json.JSONDecodeError:
                     continue
 
-                if event.get("type") == "session_meta":
+                if event.get("type") == "session_meta" and owner_session_id is None:
                     payload = event.get("payload") or {}
-                    exact_session = payload.get("id") == thread_id
+                    candidate_id = payload.get("id")
+                    if isinstance(candidate_id, str):
+                        owner_session_id = candidate_id
                 elif event.get("type") == "turn_context":
                     payload = event.get("payload")
                     if isinstance(payload, dict):
@@ -46,7 +48,7 @@ def parse_rollout(path: Path, thread_id: str) -> tuple[bool, dict[str, Any] | No
     except OSError as error:
         fail(f"cannot read a rollout candidate: {error}")
 
-    return exact_session, latest_context
+    return owner_session_id == thread_id, latest_context
 
 
 def friendly_model(model: str) -> str:
