@@ -1,0 +1,29 @@
+# Merge these keys into the matching sections of ~/.codex/config.toml.
+# DO NOT append duplicate [features], [features.multi_agent_v2], or [agents]
+# tables. DO NOT replace the user's complete config.toml.
+
+# Economical global default for routine and high-volume tasks.
+model = "gpt-5.6-luna"
+model_reasoning_effort = "max"
+
+[features]
+# Optional but useful: makes the structured user-input tool available outside
+# plan mode in Codex builds that support this flag.
+default_mode_request_user_input = true
+multi_agent = true
+
+# Observed Codex Desktop configuration. These keys are version-dependent and
+# may change; verify against the installed Codex build before merging.
+[features.multi_agent_v2]
+enabled = true
+hide_spawn_agent_metadata = false
+expose_spawn_agent_model_overrides = true
+tool_namespace = "agents"
+
+[agents]
+enabled = true
+# Capacity ceiling, not a target. The routing rules still require the minimum
+# useful number of agents and normally prefer one luna_worker.
+max_concurrent_threads_per_session = 10
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "max"

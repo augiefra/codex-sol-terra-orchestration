@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Never commit private Codex state or generated model catalogs.
+.codex-private/
+**/models_cache.json
+**/desktop-multi-agent.json
+**/model-catalogs/
+**/config.local.toml
