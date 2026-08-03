@@ -16,3 +16,6 @@ routing instructions installed into a user's Codex configuration.
   High subagents handle independent, bounded work through Codex multi-agent
   communication. Do not add a custom agent profile unless a proven technical
   constraint requires it; stop and raise that constraint before doing so.
+- Preserve the optional third lane as a separate user-owned Luna Max task for
+  large autonomous batches, created only after explicit approval. Never
+  represent it as a native Multi-Agent V2 subagent or add Luna to config.toml.

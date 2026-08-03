@@ -57,3 +57,25 @@ ownership and independent validation.
 Stop the child and return its evidence to Sol. Tighten the packet's
 out-of-scope list and escalation condition. Sol owns framing, authorization,
 architecture and protected-boundary decisions, review, and final acceptance.
+
+## Sol never proposes a standalone Luna Max task
+
+Confirm the global `AGENTS.md` contains the standalone-task admission gate.
+The route should remain rare: all required conditions must hold, and small or
+integrated work should stay with Sol or a native Terra subagent. Open a fresh
+task after changing global instructions if the active client does not reload
+them dynamically.
+
+## The client cannot create a Luna Max task
+
+Do not use `spawn_agent`, a custom agent, an internal feature flag, or a model
+catalog override. Ask Sol to return the complete autonomous handoff, create a
+normal user-owned task manually with Luna Max if the client offers that choice,
+and paste the packet there. Report the capability limitation explicitly.
+
+## Luna was created without approval
+
+Stop or archive the task and tighten the global rule. A separate user-owned
+task is created only after explicit approval for that occurrence. A general
+preference for low-cost routing is not standing authorization to create every
+future task.

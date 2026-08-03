@@ -28,10 +28,18 @@ The fragment sets Sol High as the parent default, enables native multi-agent
 tools, and sets Terra High as the native default subagent. It adds no custom
 agent, catalog override, or internal feature table.
 
+No Luna key belongs in `config.toml`. The optional Luna Max lane is a
+standalone-task policy installed through `AGENTS.md`, not a subagent default.
+
 ## 3. Merge routing rules
 
 Merge [templates/AGENTS-routing.md](../templates/AGENTS-routing.md) into
 `~/.codex/AGENTS.md`, preserving unrelated user instructions.
+
+The merged policy requires Sol to explain the benefit and wait for explicit
+approval before creating a separate Luna Max task. Read
+[STANDALONE-LUNA-TASKS.md](STANDALONE-LUNA-TASKS.md) before changing that
+boundary.
 
 ## 4. Validate and smoke-test
 

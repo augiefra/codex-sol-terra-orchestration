@@ -111,6 +111,33 @@ def main() -> None:
                     "cannot grant authority beyond",
                     "ne peut jamais accorder une autorisation que l’utilisateur n’a pas donnée",
                 ): "parent authorization boundary is present",
+                ("luna max",): "optional Luna Max task route is present",
+                (
+                    "standalone luna max task",
+                    "task autonome luna max",
+                    "tasks autonomes luna max",
+                ): "Luna is documented as a standalone task",
+                (
+                    "wait for the user's explicit approval",
+                    "attends l’accord explicite",
+                    "attends l'accord explicite",
+                    "après accord explicite",
+                ): "standalone task requires explicit approval",
+                (
+                    "not a native multi-agent v2 subagent",
+                    "n’est pas un sous-agent multi-agent v2",
+                    "n'est pas un sous-agent multi-agent v2",
+                    "pas un sous-agent natif multi-agent v2",
+                    "n’est pas un sous-agent",
+                    "n'est pas un sous-agent",
+                ): "Luna is not presented as a native V2 subagent",
+                (
+                    "do not copy or fork the full parent history",
+                    "ne transmets pas l’historique complet",
+                    "ne transmets pas l'historique complet",
+                    "ne transmets pas et ne fork pas l’historique complet",
+                    "ne transmets pas et ne fork pas l'historique complet",
+                ): "standalone handoff minimizes inherited context",
             }
             for alternatives, message in checks.items():
                 report.require(any(needle in instructions for needle in alternatives), message)

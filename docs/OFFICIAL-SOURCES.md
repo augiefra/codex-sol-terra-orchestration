@@ -18,6 +18,12 @@ policy. They are deliberately separate.
 
 These are the sources for every configuration key used by this repository.
 
+The optional standalone Luna Max lane does not add a configuration key. It is
+a local operating policy that uses a client capability only when that client
+explicitly exposes user-owned task creation with model and effort selection.
+The capability must be checked at runtime; otherwise the workflow returns a
+ready-to-paste handoff and stops.
+
 ## Guidance distinct from official documentation
 
 [Eric Provencher's post on X](https://x.com/pvncher/status/2083300990350954981)
@@ -32,6 +38,8 @@ OpenAI rules:
 
 - Sol High is the parent orchestrator for the documented topology;
 - Terra High is the default native subagent;
+- a separate Luna Max task may be proposed for a large autonomous batch, but
+  only after explicit user approval and never as a simulated V2 subagent;
 - routing considers difficulty and risk instead of size alone;
 - a batch assigns one writable owner per file;
 - a child stops after two distinct evidence-based failures or on a protected

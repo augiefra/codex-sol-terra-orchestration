@@ -21,6 +21,9 @@ does not provide a security boundary.
 - Do not treat `AGENTS.md` as a substitute for sandboxing and approvals.
 - Do not infer the effective model or permissions from configuration alone;
   verify the actual runtime when it matters.
+- Treat a standalone Luna Max task as a new user-owned task, not as a native
+  subagent. Require explicit approval before creation, send minimal context,
+  and preserve the same authorization and protected-boundary rules.
 
 ## Native configuration only
 
@@ -28,6 +31,7 @@ This workflow intentionally uses documented native multi-agent settings. Do
 not add an internal feature flag, model catalog override, or custom agent as a
 fallback. If native support is unavailable, preserve the current configuration
 and investigate the client version, managed policy, and documented settings.
+The optional standalone Luna Max lane does not alter this rule.
 
 ## Reporting a security issue
 

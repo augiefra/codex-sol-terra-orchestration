@@ -11,6 +11,7 @@ Install the workflow from:
 https://github.com/augiefra/codex-sol-terra-orchestration
 
 Read README.md, SECURITY.md, this document,
+docs/STANDALONE-LUNA-TASKS.md,
 templates/config.fragment.toml, and templates/AGENTS-routing.md completely
 before making changes.
 
@@ -24,6 +25,12 @@ Target topology:
 - native subagent default: gpt-5.6-terra with high reasoning;
 - features.multi_agent and agents.enabled enabled;
 - max_concurrent_threads_per_session set to 10.
+
+Also merge the optional standalone-task policy from AGENTS-routing.md. It may
+let Sol propose a separate gpt-5.6-luna/max task for a large autonomous batch,
+but only after explicit user approval. This is an instruction-layer route, not
+a config.toml model default or a native subagent. Do not create a Luna task
+during installation.
 
 Preserve every unrelated setting, including approval, sandbox, authentication,
 network, MCP, plugin, connector, project-trust, service-tier, and any explicit
@@ -55,7 +62,8 @@ project trust, notifications, or account and service-tier settings.
 Merge [templates/AGENTS-routing.md](../templates/AGENTS-routing.md) into the
 existing global instructions. Keep the user's collaboration style, repository
 rules, safety constraints, and existing footer rules. Do not add a custom
-agent profile: native agents use the `[agents]` defaults.
+agent profile: native agents use the `[agents]` defaults. The standalone Luna
+lane is represented only by routing instructions.
 
 ## Validation and rollback
 

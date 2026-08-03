@@ -1,4 +1,4 @@
-<!-- codex-sol-terra-orchestration:v1 -->
+<!-- codex-sol-terra-orchestration:v2 -->
 
 ## Model identification
 
@@ -59,3 +59,38 @@
   never by task size alone.
 - Terra is selected for speed and efficiency on suitably bounded work; this is
   not a guarantee of a fixed percentage saving or speedup.
+
+## Optional standalone Luna Max tasks
+
+- A Luna Max task is a separate user-owned task, not a native Multi-Agent V2
+  subagent. Never use a model catalog patch, compatibility override, custom
+  agent, or `spawn_agent` to simulate this lane.
+- Consider this lane only when all of the following hold: the workload is
+  large enough to justify a separate task; its scope and sources are stable;
+  it is independent, repeatable or high-volume; its output is objectively
+  verifiable; it needs no proactive inter-agent coordination; and it crosses
+  no protected security, authorization, data-integrity, destructive,
+  production, or public-contract boundary.
+- Prefer direct Sol execution for small work and native Terra delegation for
+  work that should remain integrated with the parent. Cost alone is not a
+  sufficient reason to create another task.
+- Explain why the standalone shape is useful and wait for the user's explicit
+  approval before creating the task. Never create a user-owned thread
+  silently. Approval to use this workflow globally is not approval for every
+  future task creation.
+- After approval, create a separate task with `gpt-5.6-luna` and reasoning
+  effort `max` when the current client exposes explicit task creation and that
+  model/effort combination. Use the relevant saved project for repo-scoped
+  work and a projectless task for general work. If the capability is not
+  exposed, return a ready-to-paste handoff instead of pretending delegation
+  occurred.
+- Do not copy or fork the full parent history by default. Send a self-contained
+  handoff containing: objective, minimal source-of-truth context, scope,
+  prohibited actions, authorized actions, invariants, owned writable files if
+  any, expected deliverable, objective validation, stop conditions, and the
+  runtime-model footer rule.
+- The Sol parent remains responsible for tracking the separate task, reviewing
+  its evidence, deciding any ambiguity, integrating accepted results, and
+  producing the final conclusion. The Luna task cannot broaden user authority
+  and must return immediately on a protected boundary or after two distinct
+  evidence-based failures.
