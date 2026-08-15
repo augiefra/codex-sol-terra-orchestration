@@ -24,20 +24,24 @@ merge its top-level values plus the values in `[features]` and `[agents]` into
 matching existing tables. Do not paste the fragment at the end when the table
 is already present: duplicate TOML keys or tables are invalid.
 
-The fragment sets Sol High as the parent default, enables native multi-agent
-tools, and sets Terra High as the native default subagent. It adds no custom
-agent, catalog override, or internal feature table.
+The fragment sets Sol Max as the parent default, enables native multi-agent
+tools, caps child concurrency at eight, and sets Luna Max as the native leaf
+default. It adds no custom agent, catalog override, compatibility patch, or
+internal feature flag.
 
-No Luna key belongs in `config.toml`. The optional Luna Max lane is a
-standalone-task policy installed through `AGENTS.md`, not a subagent default.
+Terra High is selected explicitly by the parent only for a collaborative
+branch that needs proactive communication, recursive delegation, or materially
+deeper intermediate reasoning. It is not the ordinary child default.
 
 ## 3. Merge routing rules
 
 Merge [templates/AGENTS-routing.md](../templates/AGENTS-routing.md) into
 `~/.codex/AGENTS.md`, preserving unrelated user instructions.
 
-The merged policy requires Sol to explain the benefit and wait for explicit
-approval before creating a separate Luna Max task. Read
+The merged policy does not require additional user approval for a native Luna
+leaf operating within the current authorized workflow. It still requires Sol
+to explain the benefit and wait for explicit approval before creating a
+separate user-owned Luna Max task. Read
 [STANDALONE-LUNA-TASKS.md](STANDALONE-LUNA-TASKS.md) before changing that
 boundary.
 
@@ -51,4 +55,6 @@ python3 scripts/verify_install.py
 
 Resolve all errors, restart Codex only if required, then follow
 [VERIFICATION.md](VERIFICATION.md). An explicit model selection by the user
-still takes precedence over the defaults.
+still takes precedence for the process where it was made. A parent-thread
+selection does not implicitly pin unpinned children unless the user scopes the
+choice to child work too.

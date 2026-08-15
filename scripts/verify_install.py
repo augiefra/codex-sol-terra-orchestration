@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Read-only static verifier for the native Sol–Terra Codex workflow."""
+"""Read-only verifier for the native Sol–Luna–Terra Codex workflow."""
 
 from __future__ import annotations
 
 import argparse
 import os
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -64,22 +65,22 @@ def main() -> None:
 
     if config:
         report.require(config.get("model") == "gpt-5.6-sol", "parent default model is Sol")
-        report.require(config.get("model_reasoning_effort") == "high", "parent default effort is High")
+        report.require(config.get("model_reasoning_effort") == "max", "parent default effort is Max")
         features = config.get("features") if isinstance(config.get("features"), dict) else {}
         agents = config.get("agents") if isinstance(config.get("agents"), dict) else {}
         report.require(features.get("multi_agent") is True, "multi_agent feature is enabled")
         report.require(agents.get("enabled") is True, "native agents are enabled")
         report.require(
-            agents.get("default_subagent_model") == "gpt-5.6-terra",
-            "default native subagent model is Terra",
+            agents.get("default_subagent_model") == "gpt-5.6-luna",
+            "default native leaf model is Luna",
         )
         report.require(
-            agents.get("default_subagent_reasoning_effort") == "high",
-            "default native subagent effort is High",
+            agents.get("default_subagent_reasoning_effort") == "max",
+            "default native leaf effort is Max",
         )
         report.require(
-            agents.get("max_concurrent_threads_per_session") == 10,
-            "max_concurrent_threads_per_session is 10",
+            agents.get("max_concurrent_threads_per_session") == 8,
+            "max_concurrent_threads_per_session is 8",
         )
         report.require("model_catalog_json" not in config, "no model catalog override is configured")
         report.require(
@@ -97,7 +98,24 @@ def main() -> None:
             report.errors.append(f"cannot read global AGENTS.md: {error}")
         else:
             checks = {
-                ("terra high",): "Terra routing rule is present",
+                (
+                    "feuille native en `gpt-5.6-luna`",
+                    "native luna max leaf",
+                    "luna max is the ordinary native leaf",
+                    "sous-agent feuille luna natif",
+                    "a native spawn without an explicit model or effort defaults to luna max",
+                ): "Luna Max native-leaf routing rule is present",
+                (
+                    "terra high seulement pour une branche collaborative",
+                    "terra high only for a collaborative branch",
+                    "terra high is selected only",
+                    "select terra high explicitly only when",
+                ): "Terra High conditional branch rule is present",
+                (
+                    "ne coordonne pas d’agents pairs",
+                    "does not coordinate peers",
+                    "terminal worker",
+                ): "Luna leaf coordination boundary is present",
                 ("codex_thread_id",): "runtime identity rule is present",
                 (
                     "two distinct evidence-based attempts",
@@ -111,38 +129,39 @@ def main() -> None:
                     "cannot grant authority beyond",
                     "ne peut jamais accorder une autorisation que l’utilisateur n’a pas donnée",
                 ): "parent authorization boundary is present",
-                ("luna max",): "optional Luna Max task route is present",
+                ("fork_turns", "historique complet"): "minimal Luna context rule is present",
+                ("luna max",): "Luna Max routing is present",
                 (
-                    "standalone luna max task",
-                    "task autonome luna max",
-                    "tasks autonomes luna max",
-                ): "Luna is documented as a standalone task",
+                    "separate user-owned luna max task",
+                    "task utilisateur luna max séparé",
+                    "tasks utilisateur séparés luna max",
+                ): "optional separate Luna task is distinguished from native leaves",
                 (
-                    "wait for the user's explicit approval",
+                    "wait for explicit user approval",
                     "attends l’accord explicite",
                     "attends l'accord explicite",
                     "après accord explicite",
-                ): "standalone task requires explicit approval",
-                (
-                    "not a native multi-agent v2 subagent",
-                    "n’est pas un sous-agent multi-agent v2",
-                    "n'est pas un sous-agent multi-agent v2",
-                    "pas un sous-agent natif multi-agent v2",
-                    "n’est pas un sous-agent",
-                    "n'est pas un sous-agent",
-                ): "Luna is not presented as a native V2 subagent",
-                (
-                    "do not copy or fork the full parent history",
-                    "ne transmets pas l’historique complet",
-                    "ne transmets pas l'historique complet",
-                    "ne transmets pas et ne fork pas l’historique complet",
-                    "ne transmets pas et ne fork pas l'historique complet",
-                ): "standalone handoff minimizes inherited context",
+                ): "separate user task requires explicit approval",
             }
             for alternatives, message in checks.items():
                 report.require(any(needle in instructions for needle in alternatives), message)
-            report.require("custom agent profile" not in instructions, "no custom-agent profile is required")
+            report.require(
+                any(
+                    needle in instructions
+                    for needle in (
+                        "do not add a custom agent profile",
+                        "n’ajoute jamais de catalogue de modèles modifié",
+                        "n'ajoute jamais de catalogue de modèles modifié",
+                    )
+                ),
+                "routing policy forbids custom agent profiles",
+            )
+            report.require(
+                re.search(r"\bluna_[a-z0-9_-]+\b", instructions) is None,
+                "no named custom Luna profile is referenced by routing policy",
+            )
             report.require("model_catalog_json" not in instructions, "no model catalog override is recommended")
+            report.require("multi_agent_v2" not in instructions, "no internal multi_agent_v2 flag is recommended")
 
     report.print()
     raise SystemExit(1 if report.errors else 0)

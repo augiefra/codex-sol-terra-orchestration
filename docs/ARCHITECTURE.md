@@ -2,105 +2,157 @@
 
 ## Objective
 
-Keep authority and cross-cutting judgment in a Sol High parent thread, while
-using native Terra High subagents for work that is independently executable
-and objectively checkable. This uses Codex's built-in multi-agent workflow and
-the documented `[agents]` defaults; there is no profile to install or catalog
-to patch.
+Keep authority and cross-cutting judgment in a Sol Max parent while moving
+independent, noisy, or high-volume execution into native Luna Max leaves.
+Select Terra High only when a bounded branch must itself coordinate agents,
+communicate proactively, delegate recursively, or integrate dependent
+intermediate results.
 
-For large autonomous batches, the parent may propose a third execution shape:
-a separate user-owned Luna Max task. It is created only after explicit user
-approval, receives a self-contained handoff, and returns a verifiable
-deliverable. It is not a native subagent and does not change the Sol–Terra
-configuration.
+This uses Codex's documented `features.multi_agent` and `[agents]` settings.
+There is no custom role to install, compatibility layer to force, model cache
+to patch, or catalog to override.
+
+## Topology
+
+```text
+Sol Max parent
+├── Luna Max leaf                 independent terminal assignment
+├── Luna Max leaf                 independent terminal assignment
+└── Terra High branch lead        collaborative bounded subproject
+    ├── Luna Max leaf
+    └── Luna Max leaf
+```
+
+Sol may coordinate several Luna leaves directly. Terra is not a mandatory
+middle layer.
 
 ## Responsibilities
 
-### Sol High — parent orchestrator
+### Sol Max — parent owner
 
-Sol frames the objective and invariants, grants in-scope authority only,
-decides architecture/product/security/production questions, reviews evidence,
-integrates results, and provides the final answer.
+Sol frames the objective and invariants, owns user authorization, decides
+architecture/product/security/production questions, chooses the execution
+shape, reviews evidence, integrates accepted work, and concludes.
 
-### Terra High — native subagent
+### Luna Max — default native leaf
 
-Terra explores or executes a self-contained task with a clear validation:
-read-heavy repository or document scans, supporting research, log and test
-analysis, bounded console work, deterministic transformations, or a small
-implementation already decided by Sol. It returns evidence and does not alter
-the global objective or decide a protected boundary.
+Luna completes one self-contained assignment with objective validation. It is
+well suited to repository and document scans, web or Browser evidence,
+console inspection, tests, deterministic transformations, high-volume
+classification, and small implementation already decided by the parent.
 
-### Luna Max — optional standalone batch task
+A Luna leaf may use its tools and edit only explicitly owned files when the
+user authorized implementation. It does not coordinate peers, steer another
+agent, recursively delegate, modify the global objective, or decide a
+protected boundary.
 
-Luna handles a high-volume, repeatable, context-heavy workload that is large
-enough to justify a separate user-owned task and can run without proactive
-inter-agent communication. Sol explains the split, obtains explicit approval,
-creates the task when the client exposes that capability, tracks it, reviews
-its deliverable, and keeps every decision and authorization boundary.
+### Terra High — collaborative branch lead
 
-The standalone task is not created through native subagent spawning. It does
-not inherit the full parent history by default and cannot modify the global
-objective, expand authority, or cross a protected boundary.
+Terra owns a bounded subproject only when that branch needs proactive
+inter-agent communication, recursive delegation, steering, or materially
+deeper intermediate reasoning. Terra may delegate terminal packets to Luna
+leaves, combine their evidence, and return one result to the parent.
 
-## Delegation gate
+Terra still cannot broaden authority or take architecture, security,
+production, product, or public-contract decisions away from the parent.
 
-| Dimension | Native Terra subagent | Keep with Sol |
-|---|---|---|
-| Ambiguity | Clear interpretation | Material contradiction or choice |
-| Blast radius | Local and reversible | Cross-system, public, destructive, difficult to reverse |
-| Validation | Deterministic and available | Subjective, missing, or expensive |
-| Security/data | No protected boundary | Auth, permissions, secrets, payments, integrity |
-| Failure state | Fewer than two failed evidence-based attempts | Two distinct attempts already failed |
-| Ownership | Explicit sole owner per file | Shared or conflicting write ownership |
+### Luna Max — optional separate user task
 
-Task size never decides routing by itself: a large mechanical change may fit a
-bounded Terra task, while a small authorization change belongs to Sol.
+A separate user-owned Luna Max task remains available for an exceptionally
+large autonomous batch. Creating that new task is different from spawning a
+native Luna leaf and requires explicit user approval for that occurrence.
+See [Standalone Luna Max tasks](STANDALONE-LUNA-TASKS.md).
 
-## Execution-shape gate
+## Routing gate
 
-| Shape | Use when | Do not use when |
-|---|---|---|
-| Sol directly | The task is small, ambiguous, high-risk, decision-heavy, or tightly coupled | The only reason is to avoid a useful bounded delegation |
-| Native Terra High subagent | Work is independently bounded but should remain integrated with the parent workflow | It requires an unresolved architecture or protected-boundary decision |
-| Standalone Luna Max task | Work is large, autonomous, high-volume, objectively verifiable, and needs no proactive V2 coordination | The user has not explicitly approved creating a task, or coordination overhead exceeds the expected saving |
+| Dimension | Luna Max leaf | Terra High branch | Keep with parent |
+|---|---|---|---|
+| Work shape | Independent terminal assignment | Dependent subproject requiring coordination | Tightly coupled or cross-cutting |
+| Ambiguity | Clear interpretation | Several bounded intermediate choices | Material unresolved decision |
+| Communication | Return once or request parent attention | Proactive agent messaging or steering | User/product/architecture arbitration |
+| Delegation | No recursive delegation | May delegate bounded leaves | Owns the overall tree |
+| Validation | Objective and available | Several objective results to integrate | Subjective, missing, or high-stakes |
+| Security/data | No protected boundary | No protected decision delegated | Auth, permissions, secrets, payments, integrity |
+| Ownership | Explicit sole owner per writable file | Disjoint owners across its branch | Shared or conflicting ownership |
 
-## Child packet and stop rules
+Task size never decides the route by itself. A large mechanical inventory may
+fit Luna, while a one-line authorization change belongs to the parent.
 
-Every delegation states the objective, relevant context, scope, prohibited
-actions, authorized actions, invariants, exact owned writable files, expected
-result, and validation. Start read-only unless Sol explicitly authorizes a
-mutation. Parallel work requires genuinely independent scopes, validation, and
-file ownership.
+## Delegation packet
 
-The child stops immediately and returns the exact issue if ambiguity becomes
-material, an unmade decision is needed, the scope would expand, or the task
-touches security, authentication, authorization, data integrity, destructive
-migration, or a public/cross-system contract. After two distinct
-evidence-based failures, it stops further attempts and reports the evidence,
-remaining plausible hypotheses, and blocker to Sol.
+Every child receives:
 
-Parent instructions never broaden user authority. External changes,
-publication, production mutation, commits, pushes, and deployments still need
-explicit user authorization and a bounded instruction from the parent.
+1. objective;
+2. minimal context and exact sources of truth;
+3. in-scope and out-of-scope boundaries;
+4. authorized and prohibited actions;
+5. invariants;
+6. exact writable files, each with one owner, or `none`;
+7. expected deliverable;
+8. objective validation;
+9. stop and return conditions;
+10. runtime-model footer rule.
 
-## Standalone-task lifecycle
+Start read-only unless implementation or mutation was explicitly authorized.
+Parent instructions never broaden the user's authority.
 
-1. Sol classifies the workload and explains why a separate Luna Max task is
-   preferable to direct work or a Terra subagent.
-2. Sol waits for explicit approval to create the user-owned task.
-3. Sol sends a minimal autonomous packet rather than the full parent history.
-4. Luna executes within the packet and returns evidence, validation,
-   limitations, and the actual runtime footer.
-5. Sol verifies the result, resolves ambiguity, and integrates only accepted
-   output.
+## Context policy
 
-If the current client cannot create a task with an explicit model and effort,
-Sol returns the complete handoff for manual creation. It must not fall back to
-catalog modification or claim that Luna ran as a native subagent.
+For Luna leaves, prefer a self-contained packet with no inherited parent
+turns. Use a small positive fork, normally one to three recent turns, only
+when those turns contain an essential decision. Do not fork the complete
+parent history by default.
+
+This is a context-quality rule, not a claim that Luna cannot inherit context.
+Luna can receive focused context; the goal is to avoid sending years of
+architecture discussion, unrelated logs, or duplicated instructions to a
+terminal worker.
+
+Terra may receive more context when it must coordinate a branch, but the same
+minimal-context principle applies.
+
+## Stop and escalation rules
+
+A child stops immediately and returns the exact issue when:
+
+- ambiguity becomes material;
+- an unmade decision is required;
+- the assignment would expand beyond its packet;
+- security, authentication, authorization, data integrity, destructive
+  migration, production, or a public/cross-system contract is involved;
+- new user authority is required.
+
+After two distinct evidence-based attempts fail, the child stops retrying and
+returns the evidence, remaining plausible hypotheses, and exact blocker.
+
+External publication, production mutation, commit, push, deployment, purchase,
+or destructive action still requires explicit user authorization and a
+bounded parent instruction.
+
+## Concurrency and ownership
+
+`max_concurrent_threads_per_session = 8` is a ceiling, not a target. Use one
+agent when one agent is sufficient. Parallelize only independent assignments
+with independent validation and disjoint writable ownership. Two agents never
+edit the same file in one batch.
+
+## Model and effort precedence
+
+An explicit user selection in the app, extension, CLI, or thread settings wins
+over this default policy for the process where the selection was made. A
+parent-thread choice controls the parent but does not implicitly pin every
+child. Unless the user scopes the choice to child work too, an unpinned child
+still resolves through `[agents]`; an explicit child spawn model or effort wins
+over that default. Never silently replace a manual choice to recreate the
+preferred topology.
+
+Ultra may delegate more proactively, but it is not required for this workflow.
+Sol Max follows applicable `AGENTS.md` routing instructions while avoiding the
+default latency and token overhead of Ultra.
 
 ## Runtime identity
 
-The requested model and `config.toml` prove intent only. When available, prove
+Requested settings and `config.toml` prove intent only. When available, prove
 the current runtime from the exact rollout:
 
 ```text
@@ -111,7 +163,5 @@ CODEX_THREAD_ID
 ```
 
 Only the first `session_meta` establishes rollout ownership. A child rollout
-can contain the parent's `session_meta` later in inherited history.
-
-The response footer is always the final line and reports the proven runtime;
-otherwise it says `Model : non exposé par le runtime`.
+may contain its parent's history later. If runtime identity cannot be proven,
+the footer says `Model : non exposé par le runtime`.

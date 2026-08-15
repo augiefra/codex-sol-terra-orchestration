@@ -6,37 +6,67 @@
    `[agents].enabled = true`.
 2. Check that no project-local configuration or managed policy overrides the
    user configuration.
-3. Open a fresh task or fully restart Codex if the installed client requires
-   it to discover a configuration change.
-4. Verify the active client supports multi-agent workflows before changing any
-   unrelated setting.
+3. Open a fresh task or fully restart Codex if the active client does not
+   reload global settings dynamically.
+4. Verify the active client exposes native multi-agent workflows and Luna in
+   the spawn model surface.
 
-Do not create a custom profile or add a model catalog override as a fallback.
+Do not create a custom profile, enable an undocumented internal feature, patch
+a model cache, or add a model-catalog override as a fallback. Report the exact
+capability blocker.
 
 ## A child uses a different model or effort
 
 Check, in order:
 
-1. an explicit user selection for the thread;
-2. an explicit spawn model or reasoning override;
-3. `[agents]` defaults;
-4. the actual child `turn_context`.
+1. an explicit spawn model or effort;
+2. a custom role file, if the user intentionally created one;
+3. `[agents].default_subagent_model` and
+   `[agents].default_subagent_reasoning_effort`;
+4. the parent's model and effort fallback;
+5. the actual child `turn_context`.
 
-The official configuration reference says an explicit spawn model or effort
-takes precedence over the defaults. Do not stop at the configuration layer.
+The expected unpinned child for this workflow is Luna Max. An explicitly
+selected collaborative branch is Terra High. Configuration is intent; runtime
+metadata is the proof.
 
-## The parent is not Sol High
+A manual parent-thread model selection controls the parent. It does not by
+itself pin an unpinned child, which still resolves through `[agents]`, unless
+the user explicitly applied the manual choice to child work as well. An
+explicit child spawn selection always wins for that child.
+
+## The parent is not Sol Max
 
 An explicit user choice, project-local configuration, CLI flag, profile, or
-managed policy may override this repository's parent default. Verify the
-current runtime rather than guessing from the configuration, then preserve the
-user's explicit choice unless they ask to change it.
+managed policy may override the global parent default. Verify the current
+runtime, then preserve the user's explicit choice unless they ask to change
+it.
+
+## Terra High was selected for a terminal assignment
+
+Terra should have a concrete reason: proactive inter-agent communication,
+steering, recursive delegation, integration of dependent intermediate
+results, or materially deeper bounded reasoning. If none applies, return the
+assignment to a Luna leaf or let the parent complete it directly. Do not keep
+Terra merely because the task is large.
+
+## A Luna leaf tries to coordinate or delegate
+
+Luna is a terminal worker in this topology. Tighten the packet with:
+
+```text
+Complete this assignment directly. Do not spawn, steer, or coordinate other
+agents. Return evidence and validation to the parent.
+```
+
+If the active runtime exposes an unexpected capability surface, stop and
+report the observed tool/model metadata rather than modifying the catalog.
 
 ## Final response says `Model : non exposé par le runtime`
 
 Check that `CODEX_THREAD_ID` is available, the process can read its sessions,
-the rollout matches `session_meta.payload.id` exactly, and the latest
-`turn_context` contains model and effort. Use
+the owning rollout's **first** `session_meta.payload.id` matches exactly, and
+the latest `turn_context` contains model and effort. Use
 `scripts/inspect_runtime_model.py` in the affected process. Never substitute a
 requested label for runtime proof.
 
@@ -48,34 +78,27 @@ merge, parse again, and inspect the diff before restarting.
 
 ## Too many agents are spawned
 
-`max_concurrent_threads_per_session = 10` is a ceiling, not a target. Use the
+`max_concurrent_threads_per_session = 8` is a ceiling, not a target. Use the
 minimum useful number. Parallelize only independent packets with disjoint file
-ownership and independent validation.
+ownership and independent validation. Close completed or stale agent threads
+through the parent when the client exposes that control.
 
-## A child starts making an architecture decision
+## A child starts making a protected decision
 
-Stop the child and return its evidence to Sol. Tighten the packet's
-out-of-scope list and escalation condition. Sol owns framing, authorization,
-architecture and protected-boundary decisions, review, and final acceptance.
+Stop the child and return its evidence to the parent. Tighten the packet's
+out-of-scope list and escalation condition. The parent owns framing,
+authorization, architecture, protected-boundary decisions, review, and final
+acceptance.
 
-## Sol never proposes a standalone Luna Max task
+## A separate Luna task was created without approval
 
-Confirm the global `AGENTS.md` contains the standalone-task admission gate.
-The route should remain rare: all required conditions must hold, and small or
-integrated work should stay with Sol or a native Terra subagent. Open a fresh
-task after changing global instructions if the active client does not reload
-them dynamically.
+This rule concerns a new **user-owned task**, not a native Luna leaf. Stop or
+archive the separate task and tighten the global rule. Creating another user
+task requires explicit approval for that occurrence; a preference for Luna
+subagents is not standing authorization for new user threads.
 
-## The client cannot create a Luna Max task
+## The client cannot create an optional separate Luna task
 
-Do not use `spawn_agent`, a custom agent, an internal feature flag, or a model
-catalog override. Ask Sol to return the complete autonomous handoff, create a
-normal user-owned task manually with Luna Max if the client offers that choice,
-and paste the packet there. Report the capability limitation explicitly.
-
-## Luna was created without approval
-
-Stop or archive the task and tighten the global rule. A separate user-owned
-task is created only after explicit approval for that occurrence. A general
-preference for low-cost routing is not standing authorization to create every
-future task.
+Return the complete autonomous handoff and report the limitation. Do not patch
+a catalog or silently replace the requested execution shape. The parent may
+then ask whether to use one or several native Luna leaves instead.
