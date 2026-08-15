@@ -39,31 +39,31 @@ class Report:
             print(f"FAIL: {message}")
 
 
-def load_toml(path: Path, report: Report) -> dict[str, Any]:
+ROUTING_START_MARKER = "<!-- codex-sol-luna-terra-orchestration:v3 -->"
+ROUTING_END_MARKER = "<!-- /codex-sol-luna-terra-orchestration:v3 -->"
+
+
+def load_toml(path: Path, report: Report) -> dict[str, Any] | None:
     if not path.is_file():
         report.errors.append("user config.toml is missing")
-        return {}
+        return None
     try:
         with path.open("rb") as handle:
             data = tomllib.load(handle)
     except (OSError, tomllib.TOMLDecodeError) as error:
         report.errors.append(f"user config.toml does not parse: {error}")
-        return {}
+        return None
     report.passes.append("user config.toml parses as TOML")
     return data
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    default_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
-    parser.add_argument("--codex-home", type=Path, default=default_home)
-    args = parser.parse_args()
-
+def verify_codex_home(root: Path) -> Report:
     report = Report()
-    root = args.codex_home.expanduser()
     config = load_toml(root / "config.toml", report)
 
-    if config:
+    # An empty but valid TOML document is still an invalid installation. Run
+    # every required-value check whenever parsing succeeded.
+    if config is not None:
         report.require(config.get("model") == "gpt-5.6-sol", "parent default model is Sol")
         report.require(config.get("model_reasoning_effort") == "max", "parent default effort is Max")
         features = config.get("features") if isinstance(config.get("features"), dict) else {}
@@ -93,10 +93,31 @@ def main() -> None:
         report.errors.append("global AGENTS.md is missing")
     else:
         try:
-            instructions = instructions_path.read_text(encoding="utf-8").lower()
+            raw_instructions = instructions_path.read_text(encoding="utf-8")
         except OSError as error:
             report.errors.append(f"cannot read global AGENTS.md: {error}")
         else:
+            start_count = raw_instructions.count(ROUTING_START_MARKER)
+            end_count = raw_instructions.count(ROUTING_END_MARKER)
+            report.require(
+                start_count == 1 and end_count == 1,
+                "exactly one v3 routing marker pair is installed",
+            )
+            if start_count == 1 and end_count == 1:
+                start = raw_instructions.index(ROUTING_START_MARKER)
+                end = raw_instructions.index(ROUTING_END_MARKER)
+                ordered = start < end
+                report.require(ordered, "v3 routing markers are ordered")
+                managed_instructions = (
+                    raw_instructions[start : end + len(ROUTING_END_MARKER)]
+                    if ordered
+                    else raw_instructions
+                )
+            else:
+                # Keep reporting semantic failures even when the managed block
+                # itself is malformed.
+                managed_instructions = raw_instructions
+            instructions = managed_instructions.lower()
             checks = {
                 (
                     "feuille native en `gpt-5.6-luna`",
@@ -129,6 +150,12 @@ def main() -> None:
                     "cannot grant authority beyond",
                     "ne peut jamais accorder une autorisation que l’utilisateur n’a pas donnée",
                 ): "parent authorization boundary is present",
+                (
+                    "security, authentication, authorization, data integrity",
+                    "security, authentication, authorization, data-integrity",
+                    "sécurité, l’authentification, les autorisations, l’intégrité des données",
+                    "securite, l'authentification, les autorisations, l'integrite des donnees",
+                ): "protected-boundary escalation rule is present",
                 ("fork_turns", "historique complet"): "minimal Luna context rule is present",
                 ("luna max",): "Luna Max routing is present",
                 (
@@ -163,6 +190,16 @@ def main() -> None:
             report.require("model_catalog_json" not in instructions, "no model catalog override is recommended")
             report.require("multi_agent_v2" not in instructions, "no internal multi_agent_v2 flag is recommended")
 
+    return report
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    default_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
+    parser.add_argument("--codex-home", type=Path, default=default_home)
+    args = parser.parse_args()
+
+    report = verify_codex_home(args.codex_home.expanduser())
     report.print()
     raise SystemExit(1 if report.errors else 0)
 

@@ -1,5 +1,9 @@
 # Architecture and routing policy
 
+This document is the canonical policy for the repository. The installable
+[routing template](../templates/AGENTS-routing.md) is its compact executable
+summary; tutorials and examples must not redefine the policy independently.
+
 ## Objective
 
 Keep authority and cross-cutting judgment in a Sol Max parent while moving
@@ -11,6 +15,26 @@ intermediate results.
 This uses Codex's documented `features.multi_agent` and `[agents]` settings.
 There is no custom role to install, compatibility layer to force, model cache
 to patch, or catalog to override.
+
+## Capability model versus local policy
+
+Codex currently exposes two useful subagent capability tiers:
+
+- Sol and Terra can act as collaborative agents: they can communicate
+  proactively and recursively delegate;
+- Luna can act as a terminal leaf that receives a bounded assignment and
+  returns its result.
+
+That distinction is supported by the current official
+[Subagents documentation](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+and was described explicitly by
+[Eric Provencher](https://x.com/pvncher/status/2088666195381592153) during the
+2026-08-15 rollout. This repository then adds an opinionated local policy:
+Sol Max owns the parent, Luna Max is the ordinary leaf default, and Terra High
+is selected only for a branch that genuinely needs a coordinator.
+
+See [Evolution, evidence, and attribution](EVOLUTION-AND-EVIDENCE.md) for the
+dated rollout history and evidence hierarchy.
 
 ## Topology
 
@@ -78,6 +102,17 @@ See [Standalone Luna Max tasks](STANDALONE-LUNA-TASKS.md).
 Task size never decides the route by itself. A large mechanical inventory may
 fit Luna, while a one-line authorization change belongs to the parent.
 
+The routing decision can be reduced to:
+
+```text
+protected or unresolved decision?     -> parent
+one terminal, objectively checked job? -> Luna Max leaf
+delegated branch must coordinate?      -> Terra High branch
+handoff cost exceeds the work?         -> parent
+```
+
+Concrete packets are available in [Routing recipes](ROUTING-RECIPES.md).
+
 ## Delegation packet
 
 Every child receives:
@@ -138,13 +173,21 @@ edit the same file in one batch.
 
 ## Model and effort precedence
 
-An explicit user selection in the app, extension, CLI, or thread settings wins
-over this default policy for the process where the selection was made. A
-parent-thread choice controls the parent but does not implicitly pin every
-child. Unless the user scopes the choice to child work too, an unpinned child
-still resolves through `[agents]`; an explicit child spawn model or effort wins
-over that default. Never silently replace a manual choice to recreate the
-preferred topology.
+Model and reasoning effort resolve independently. For each value, use the
+first applicable source:
+
+| Priority | Source | Scope |
+|---:|---|---|
+| 1 | Explicit user selection | The process to which the user applied it |
+| 2 | Explicit child-spawn override | That child only |
+| 3 | Intentionally selected custom role | That role invocation only |
+| 4 | `[agents]` default | Unpinned native child |
+| 5 | Parent fallback | Only when no child value was otherwise resolved |
+
+A parent-thread choice controls the parent but does not implicitly pin every
+child. Never silently replace a manual choice to recreate the preferred
+topology. Custom roles are a supported Codex feature, but this baseline does
+not install or require one.
 
 Ultra may delegate more proactively, but it is not required for this workflow.
 Sol Max follows applicable `AGENTS.md` routing instructions while avoiding the
@@ -165,3 +208,18 @@ CODEX_THREAD_ID
 Only the first `session_meta` establishes rollout ownership. A child rollout
 may contain its parent's history later. If runtime identity cannot be proven,
 the footer says `Model : non exposé par le runtime`.
+
+## Terminology
+
+- **Parent**: the process that owns framing, authority, review, and conclusion.
+- **Collaborative agent**: a child capable of proactive inter-agent messaging
+  and recursive delegation; currently Sol or Terra.
+- **Leaf**: a terminal child that performs its packet and returns; Luna is used
+  this way here.
+- **Native child**: a process created through Codex's supported subagent tools,
+  not a separate user task.
+- **Separate user task**: another top-level task created only after explicit
+  user approval; it is not part of the current agent tree.
+- **Multi-Agent V2**: a runtime capability tier discussed by the product team,
+  not an undocumented configuration flag users should add. The supported
+  public switch used here is `features.multi_agent`.

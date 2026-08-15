@@ -16,7 +16,8 @@ python3 scripts/verify_install.py
 
 It checks:
 
-- `config.toml` parses;
+- `config.toml` exists, parses, and contains every required value even when the
+  file is otherwise empty;
 - parent default is Sol Max;
 - `features.multi_agent` and `agents.enabled` are true;
 - native child default is Luna Max;
@@ -24,6 +25,7 @@ It checks:
 - no model-catalog override or internal `multi_agent_v2` setting is present;
 - global instructions define Luna as a leaf and Terra High as a conditional
   collaborative branch;
+- exactly one ordered v3 routing marker pair is installed;
 - model proof, authority, owner, protected-boundary, and two-attempt rules are
   present;
 - a separate user-owned Luna task remains explicitly approval-gated.
@@ -158,6 +160,13 @@ For the current process only:
 python3 scripts/inspect_runtime_model.py
 ```
 
+For an auditable explanation or machine-readable evidence:
+
+```bash
+python3 scripts/inspect_runtime_model.py --explain
+python3 scripts/inspect_runtime_model.py --json
+```
+
 The helper requires `CODEX_THREAD_ID`, finds candidate rollouts, and retains
 one only when its first `session_meta.payload.id` belongs to the current
 process. It then reads the latest `turn_context`. A later inherited parent
@@ -165,3 +174,17 @@ process. It then reads the latest `turn_context`. A later inherited parent
 
 The following are insufficient proof: a config value, requested model, role
 name, hard-coded footer, `/root`, task title, or rollout recency.
+
+## 8. Repository self-tests
+
+Before publishing a change to the templates or scripts:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+The suite covers a valid minimal install, empty TOML, an incorrect child
+default, duplicate routing blocks, a missing protected-boundary rule, exact
+runtime ownership, JSON evidence, rejection of a misleading filename whose
+first `session_meta` belongs to another process, and rejection of a later
+matching `session_meta` after a malformed first ownership event.

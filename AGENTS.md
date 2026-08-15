@@ -3,13 +3,27 @@
 These instructions apply to work on this repository. They are not the global
 routing instructions installed into a user's Codex configuration.
 
-- Treat `README.md`, `docs/`, and `templates/` as the public source of truth.
+- Treat `docs/ARCHITECTURE.md` as the canonical policy and
+  `templates/AGENTS-routing.md` as its installable summary. Tutorials, examples,
+  and the README must link to that policy rather than silently redefining it.
+- Keep the source hierarchy explicit: official OpenAI documentation, exact
+  runtime evidence, dated attributed product-team explanations, then this
+  repository's policy. A lower layer never overrides a higher layer.
+- Attribute Eric Provencher's dated public posts with direct links and short,
+  copyright-safe excerpts only. Never imply that he or OpenAI reviewed,
+  sponsored, endorsed, or is affiliated with this community repository.
 - Never copy a user's complete `~/.codex/config.toml`, model cache, model
   catalog, credentials, project trust entries, connector identifiers, local
   paths, environment fingerprints, or private instructions into this repo.
 - Keep the default installation merge-based. Never tell Codex to overwrite an
   existing global configuration wholesale.
 - Keep every verification script read-only by default.
+- Preserve exactly one ordered start/end marker pair in the routing template:
+  `<!-- codex-sol-luna-terra-orchestration:v3 -->` and
+  `<!-- /codex-sol-luna-terra-orchestration:v3 -->`. Require idempotent
+  update-in-place installation behavior.
+- Keep `python3 -m unittest discover -s tests -v` passing whenever templates or
+  verification scripts change.
 - Prefer runtime evidence from `turn_context` over claims inferred from a
   requested model, a role name, or a configuration file.
 - Preserve the core topology: Sol Max owns the parent thread; native Luna Max

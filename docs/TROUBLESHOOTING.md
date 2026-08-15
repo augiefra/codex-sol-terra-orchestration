@@ -19,12 +19,13 @@ capability blocker.
 
 Check, in order:
 
-1. an explicit spawn model or effort;
-2. a custom role file, if the user intentionally created one;
-3. `[agents].default_subagent_model` and
+1. a user selection explicitly applied to that process;
+2. an explicit child-spawn model or effort;
+3. a custom role file, if the user intentionally selected one;
+4. `[agents].default_subagent_model` and
    `[agents].default_subagent_reasoning_effort`;
-4. the parent's model and effort fallback;
-5. the actual child `turn_context`.
+5. the parent's model and effort fallback;
+6. the actual child `turn_context`.
 
 The expected unpinned child for this workflow is Luna Max. An explicitly
 selected collaborative branch is Terra High. Configuration is intent; runtime
@@ -70,11 +71,23 @@ the latest `turn_context` contains model and effort. Use
 `scripts/inspect_runtime_model.py` in the affected process. Never substitute a
 requested label for runtime proof.
 
+Use `--explain` to see the relative rollout, exact owner, context count, and
+latest runtime, or `--json` to capture the same evidence mechanically. The
+default output remains the exact footer only.
+
 ## TOML reports duplicate keys or tables
 
 The public file is a fragment. Merge each value into the existing top-level,
 `[features]`, or `[agents]` table. Restore the targeted backup, do a key-level
 merge, parse again, and inspect the diff before restarting.
+
+## The verifier reports missing, reversed, or duplicate routing markers
+
+The installed policy must contain exactly one ordered v3 start/end pair, as
+shown in the routing template. If the pair is missing from an otherwise
+equivalent older install, enclose only that workflow section. If several copies
+exist, compare them, preserve unrelated custom instructions, and consolidate
+only the duplicated managed block. Re-run the verifier before restarting.
 
 ## Too many agents are spawned
 
