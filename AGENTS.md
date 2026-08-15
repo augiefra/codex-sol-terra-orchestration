@@ -12,10 +12,15 @@ routing instructions installed into a user's Codex configuration.
 - Keep every verification script read-only by default.
 - Prefer runtime evidence from `turn_context` over claims inferred from a
   requested model, a role name, or a configuration file.
-- Preserve the core topology: Sol High owns the parent thread; native Terra
-  High subagents handle independent, bounded work through Codex multi-agent
-  communication. Do not add a custom agent profile unless a proven technical
-  constraint requires it; stop and raise that constraint before doing so.
-- Preserve the optional third lane as a separate user-owned Luna Max task for
-  large autonomous batches, created only after explicit approval. Never
-  represent it as a native Multi-Agent V2 subagent or add Luna to config.toml.
+- Preserve the core topology: Sol Max owns the parent thread; native Luna Max
+  leaf subagents handle independent, bounded work; Terra High is selected only
+  for a collaborative branch that needs proactive inter-agent communication,
+  recursive delegation, or materially deeper intermediate reasoning.
+- Keep Luna leaf prompts self-contained and focused. Prefer no inherited turns,
+  or a small positive fork when recent decisions are essential; do not fork the
+  entire parent history by default.
+- Preserve the optional separate user-owned Luna Max task for exceptionally
+  large autonomous batches, created only after explicit approval. Keep it
+  distinct from native Luna leaf delegation.
+- Do not add a custom agent profile, internal feature flag, compatibility
+  override, or model-catalog patch for routing already exposed natively.

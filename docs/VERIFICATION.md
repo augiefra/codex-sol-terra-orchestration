@@ -1,119 +1,156 @@
 # Verification
 
-Static configuration proves intent, not execution. Verify syntax, routing
-rules, then the actual parent and child runtime.
+Static configuration proves intent, not execution. Verify syntax and routing
+rules, then prove the actual parent and child runtimes.
+
+All smoke tests below are read-only. Run them in a fresh projectless task after
+restarting Codex when global settings changed.
 
 ## 1. Static verification
 
-From the repository root, run:
+From the repository root:
 
 ```bash
 python3 scripts/verify_install.py
 ```
 
-It checks that `config.toml` parses, Sol High is the parent default, native
-multi-agent tools and agents are enabled, Terra High is the default subagent,
-the concurrency ceiling is 10, no catalog or internal V2 setting is present,
-and global routing rules preserve the safeguards. It also checks that the
-optional Luna Max lane is a standalone task requiring explicit approval and a
-minimal handoff, not a native V2 subagent.
+It checks:
 
-## 2. Clean native runtime smoke test
+- `config.toml` parses;
+- parent default is Sol Max;
+- `features.multi_agent` and `agents.enabled` are true;
+- native child default is Luna Max;
+- concurrency ceiling is eight;
+- no model-catalog override or internal `multi_agent_v2` setting is present;
+- global instructions define Luna as a leaf and Terra High as a conditional
+  collaborative branch;
+- model proof, authority, owner, protected-boundary, and two-attempt rules are
+  present;
+- a separate user-owned Luna task remains explicitly approval-gated.
 
-Create a projectless task using Sol High and send:
+## 2. Native default-leaf smoke test
+
+Create a fresh projectless task whose parent is Sol Max and send:
 
 ```text
-ROUTING SMOKE TEST ONLY. Do not modify files or external systems.
+ROUTING SMOKE TEST ONLY. Do not modify files, settings, repositories, or
+external systems.
 
-Remain the Sol High parent. Spawn exactly one native subagent using the
-configured default, with no custom agent type and no explicit model override.
+Remain the parent. Spawn exactly one native subagent using the configured
+default model and effort. Do not use a custom agent and do not pass an explicit
+model or effort override. Give it a self-contained packet with no inherited
+parent turns.
 
-Give it this bounded read-only packet:
-- compute the SHA-256 of the ASCII string SOL-TERRA-ROUTING-2026 without a
-  trailing newline using one local command;
-- return the command and hash;
-- independently identify its actual model and effort from its own exact
-  runtime rollout using its own CODEX_THREAD_ID when available;
-- end with Model : <Modèle> <effort>.
+The leaf must complete the assignment directly without spawning or
+coordinating another agent. It may run exactly this local read-only command:
 
-After the child returns, verify the hash with a different local command.
-Independently identify the parent's actual model and effort from the parent's
-own exact rollout. Report parent identity, child identity, matching hash, and
-whether native routing succeeded.
+printf %s SOL-LUNA-LEAF-2026 | openssl dgst -sha256
+
+It must return the command, exact hash, and its actual runtime model and effort
+from its own metadata or canonical rollout. Wait for it, verify the hash
+independently, then report the proven parent and child runtimes. Do not infer a
+runtime from config.toml or the requested route.
 ```
 
 Expected hash:
 
 ```text
-1434122404ff5d83c87855466ede236b41c4388504b19ece93edb214228532ab
+eb30541a07d807c3792d2331b51b3aee29d4b5adc9b4d62d62f82cff43aa4779
 ```
 
-Expected runtime, unless a user deliberately selected another model or an
-explicit spawn override was used:
+Expected runtime after a successful installation:
 
 ```text
-Parent: gpt-5.6-sol / high
-Child:  gpt-5.6-terra / high
+Parent: gpt-5.6-sol / max
+Child:  gpt-5.6-luna / max
 ```
 
-## 3. Standalone Luna admission test
+## 3. Parallel Luna leaves
 
-First test routing judgment without authorizing a new task:
+Use this test to prove that Sol can coordinate Luna directly without an
+unnecessary Terra layer:
 
 ```text
-ROUTING DECISION TEST ONLY. Do not create a task, subagent, file, or external
-mutation.
+PARALLEL LUNA SMOKE TEST ONLY. Read-only; no file or external mutation.
 
-Assume I need a read-only inventory of 500 independent public pages, using a
-fixed 12-column schema and deterministic completeness counts. Explain which
-execution shape you recommend and what approval is still required.
+Spawn exactly two independent native subagents using the configured default
+model and effort, no custom type, no explicit model/effort override, and no
+full-history fork. Give each a self-contained packet. Neither child may spawn
+or coordinate another agent.
+
+Child A computes SHA-256 for ASCII CODEX-LUNA-A-2026 with no trailing newline.
+Child B computes SHA-256 for ASCII CODEX-LUNA-B-2026 with no trailing newline.
+
+Wait for both, independently verify both hashes, and prove each process's
+runtime from its own metadata or exact rollout. Report whether both were Luna
+Max and whether either attempted subdelegation.
 ```
 
-Expected result: Sol recommends a separate Luna Max task because the workload
-is large, autonomous, repeatable, and objectively verifiable, but does not
-create it without explicit approval. It should distinguish that task from a
-native Terra subagent.
-
-For a live test, explicitly authorize exactly one projectless task:
+Expected hashes:
 
 ```text
-STANDALONE LUNA SMOKE TEST ONLY. I explicitly approve creating exactly one
-projectless user-owned task using gpt-5.6-luna with reasoning effort max. Do
-not use a native subagent, custom agent, catalog override, file write, network,
-or external mutation.
+CODEX-LUNA-A-2026  a44c0526cf21608d6ae11c668984a85838cf8cf541bf60aec6acbf54f775455c
+CODEX-LUNA-B-2026  d9c6769cd74b28554abd21c0d4613c53bb7f2bfa57569910eaa4be7b674fea01
+```
 
-Send it a self-contained packet that computes the SHA-256 of the ASCII string
-SOL-LUNA-STANDALONE-2026 without a trailing newline, returns the command and
-hash, verifies its own runtime identity when available, and ends with the
-runtime model footer. Wait for completion, independently verify the hash, then
-report the created task identity, actual runtime, matching hash, and whether
-the standalone route succeeded.
+## 4. Conditional Terra-to-Luna branch
+
+This test validates the exception: Terra is selected explicitly because the
+branch must itself delegate and integrate a leaf result.
+
+```text
+TERRA COORDINATION SMOKE TEST ONLY. Read-only; no file or external mutation.
+
+Remain the Sol Max parent. Spawn exactly one native branch lead explicitly as
+gpt-5.6-terra with high reasoning and a self-contained packet. The Terra branch
+must spawn exactly one terminal child using the configured default model and
+effort. That leaf must not spawn another agent.
+
+The Luna leaf computes SHA-256 for ASCII TERRA-LUNA-LEAF-2026 with no trailing
+newline and returns the command, hash, and proven runtime to Terra. Terra
+verifies and integrates the leaf result, then returns its own proven runtime
+and the evidence to the parent. The parent independently verifies the hash and
+reports all three runtimes.
 ```
 
 Expected hash:
 
 ```text
-019d1207a2bd4a8889d554dfd26632696f6d5d2144dfea1e0f2ebece7c43174e
+965c011fda9d646b733ec192fa4664190bd0b61f9469ede80d7259798c6823e3
 ```
 
-Expected runtime when the client exposes the requested combination:
+Expected runtime:
 
 ```text
-Standalone task: gpt-5.6-luna / max
+Parent:      gpt-5.6-sol / max
+Branch lead: gpt-5.6-terra / high
+Leaf:        gpt-5.6-luna / max
 ```
 
-If task creation or that model/effort combination is unavailable, the correct
-result is a precise capability blocker plus the ready-to-paste handoff. It is
-not a fallback to `spawn_agent` or a catalog patch.
+If the current client exposes Luna leaves but not recursive Terra delegation,
+report that exact capability boundary. Do not enable an undocumented flag or
+patch a catalog.
 
-## 4. Existing-thread test
+## 5. Existing-thread test
 
-Repeat one bounded read-only task in an established Sol-led thread. The child
-prompt must still include objective, scope, authorized commands, no-mutation
-boundary, exact validation, and return conditions. This proves the native
-communication path handles context without relying on a custom profile.
+Repeat one bounded read-only Luna assignment in an established Sol-led thread.
+The packet must still contain objective, minimal context, scope, authorized
+commands, no-mutation boundary, validation, and return conditions. Prefer no
+inherited turns; use one to three only when a recent decision is essential.
 
-## 5. Exact runtime identity
+This proves that old thread history is not silently copied into every leaf.
+
+## 6. Optional separate-task test
+
+This is not part of native installation acceptance. Run it only when testing
+the optional creation of another user-owned Luna Max task, and only after the
+user explicitly approves creating that task. See
+[STANDALONE-LUNA-TASKS.md](STANDALONE-LUNA-TASKS.md).
+
+Native Luna success does not prove separate-task creation, and separate-task
+success does not prove native subagent routing.
+
+## 7. Exact runtime identity
 
 For the current process only:
 
@@ -121,11 +158,10 @@ For the current process only:
 python3 scripts/inspect_runtime_model.py
 ```
 
-The helper requires `CODEX_THREAD_ID`, finds filename candidates, validates
-that the first `session_meta.payload.id` belongs to the current process, and
-then reads the latest `turn_context`. It fails closed if it cannot prove one
-exact current rollout. A later inherited parent `session_meta` inside a child
-rollout is deliberately ignored for ownership.
+The helper requires `CODEX_THREAD_ID`, finds candidate rollouts, and retains
+one only when its first `session_meta.payload.id` belongs to the current
+process. It then reads the latest `turn_context`. A later inherited parent
+`session_meta` inside a child rollout is deliberately ignored.
 
-The following alone are insufficient proof: a config value, a request to
-delegate, a hard-coded footer, the `/root` role, or a task name.
+The following are insufficient proof: a config value, requested model, role
+name, hard-coded footer, `/root`, task title, or rollout recency.

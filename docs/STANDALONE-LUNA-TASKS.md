@@ -1,27 +1,30 @@
 # Standalone Luna Max tasks
 
-This is an optional third execution lane for workloads that are expensive in
-context but simple in coordination. It supplements the native Sol–Terra
-topology; it does not replace it.
+This is an optional execution shape for workloads that are exceptionally
+expensive in context but simple in coordination. It supplements native
+Sol–Luna–Terra orchestration; it does not replace native Luna leaf agents.
 
 ```text
-Sol High parent
-├── native Terra High subagent      bounded, integrated work
-└── standalone Luna Max task        large autonomous batch, after approval
+Sol Max parent
+├── native Luna Max leaf            bounded terminal work
+├── Terra High branch lead          collaborative bounded work
+└── separate Luna Max user task     exceptional batch, after approval
 ```
 
 ## What it is
 
-A standalone Luna Max task is a separate user-owned Codex task whose effective
+A standalone Luna Max task is a **separate user-owned Codex task** whose effective
 model is `gpt-5.6-luna` and whose reasoning effort is `max`. The Sol parent
 commissions the work, sends a self-contained packet, tracks the task when the
 client supports task coordination, reviews the deliverable, and remains the
 owner of decisions and final acceptance.
 
-It is not a Multi-Agent V2 child. Do not create it with `spawn_agent`, a custom
-agent profile, an internal feature flag, or a model catalog override. Max gives
-Luna more reasoning budget; it does not change the model's orchestration
-protocol.
+This document is not describing an ordinary native Luna leaf. The separate
+task is created through the client's user-task workflow, not `spawn_agent`.
+Do not use a custom agent profile, internal feature flag, compatibility patch,
+or model catalog override for either execution shape. Max gives Luna more
+reasoning budget; it does not turn a terminal worker into a collaborative
+branch coordinator.
 
 ## Admission gate
 
@@ -36,13 +39,16 @@ Use this lane only when every required condition is true:
 | Low coordination | Can the task finish without proactive Multi-Agent V2 communication or frequent steering? |
 | Safe boundary | Does it avoid unresolved architecture, security, authorization, data-integrity, destructive, production, and public-contract decisions? |
 
-If the work is small, keep it with Sol. If it is bounded but benefits from
-native parent-child communication, use Terra. Lower price alone is not an
-admission criterion.
+If the work is bounded and should remain integrated with the current parent,
+use a native Luna leaf. Use Terra only when the branch itself needs
+coordination. Lower price alone is not an admission criterion for creating a
+new user task.
 
-Good candidates include large read-only repository inventories, systematic
-web or Browser inspections, document extraction, SEO matrices, log
-classification, repeatable comparisons, and deterministic batch analysis.
+Good candidates include exceptionally large read-only repository inventories,
+systematic web or Browser inspections, document extraction, SEO matrices, log
+classification, repeatable comparisons, and deterministic batch analysis
+whose volume materially justifies another user task instead of one or several
+native Luna leaves.
 
 Poor candidates include authentication changes, migrations, payment logic,
 production configuration, public API contracts, architecture decisions, and
@@ -66,8 +72,9 @@ After approval, use the current client's user-owned task creation capability
 with model `gpt-5.6-luna` and effort `max`. Select the saved project for
 repository work and a projectless task for general analysis. If the capability
 is absent or rejects that combination, return the complete packet for manual
-creation and report the limitation. Do not substitute a native subagent or
-patch a model catalog.
+creation and report the limitation. Do not silently substitute a different
+execution shape or patch a model catalog; let the parent decide whether to use
+native Luna leaves after reporting the blocker.
 
 ## Autonomous handoff packet
 
@@ -75,7 +82,7 @@ Do not copy or fork the full Sol history by default. Send only what Luna needs:
 
 ```text
 ROLE
-You are a standalone Luna Max execution task commissioned by a Sol parent.
+You are a separate Luna Max execution task commissioned by a Sol parent.
 You are not the architecture owner and you must not expand this mission.
 
 OBJECTIVE
@@ -140,6 +147,6 @@ they cannot be established, use `Model : non exposé par le runtime`.
 ## Why this remains optional
 
 A separate task has coordination cost: it needs a handoff, monitoring, result
-retrieval, and parent review. It is powerful when the batch is large enough to
-amortize that overhead. It is wasteful for a small fix or a task that needs
-continuous parent interaction.
+retrieval, and parent review. It is powerful only when the batch is large
+enough to outperform native Luna leaves after that overhead. It is wasteful
+for a small fix or a task that needs continuous parent interaction.
