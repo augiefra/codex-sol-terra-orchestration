@@ -69,9 +69,10 @@
   is large. Choose by reasoning difficulty, ambiguity, blast radius,
   reversibility, security/data risk, objective verifiability, communication
   needs, and ownership — never by size alone.
-- Keep architecture, unresolved choices, permissions, security,
-  authentication, data integrity, destructive migration, production, and
-  public/cross-system contracts with the parent.
+- Keep architecture, unresolved choices, and permissions with the parent.
+  Security, authentication, authorization, data integrity, destructive
+  migration, production, and public/cross-system contracts are protected
+  boundaries that also stay with the parent.
 - A child returns immediately when work becomes materially ambiguous, depends
   on an unresolved decision, crosses its packet, touches a protected boundary,
   or requires new user authority.
@@ -98,3 +99,5 @@
   complete ready-to-paste handoff.
 - The parent remains responsible for tracking, reviewing, deciding ambiguity,
   integrating accepted output, and concluding.
+
+<!-- /codex-sol-luna-terra-orchestration:v3 -->

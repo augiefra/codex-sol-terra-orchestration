@@ -1,6 +1,6 @@
 # Codex Sol–Luna–Terra Orchestration
 
-A small, native Codex workflow:
+A native, evidence-backed Codex workflow:
 
 - **Sol Max** owns the parent thread, authority, architecture, review, and final
   integration.
@@ -14,6 +14,13 @@ The workflow uses documented `features.multi_agent` and `[agents]` settings.
 It requires no model-catalog patch, compatibility override, internal V2 flag,
 or custom agent profile.
 
+> [!NOTE]
+> **Updated 2026-08-15:** Codex coordinators with Multi-Agent V2 capabilities
+> can now delegate to supported leaf models, including Luna. Luna remains a
+> terminal leaf rather than a collaborative peer. The dated rollout history is
+> documented in
+> [Evolution, evidence, and attribution](docs/EVOLUTION-AND-EVIDENCE.md).
+
 > [!IMPORTANT]
 > This repository is an installation overlay, never a replacement for a
 > personal Codex configuration. Preserve existing settings and every model or
@@ -21,6 +28,40 @@ or custom agent profile.
 > precedence is scoped: a manual parent-thread choice controls the parent, while
 > an unpinned child still uses `[agents]` unless the user also selected the
 > child's model or explicitly applied the choice to all child work.
+
+## Why this repository changed
+
+The safe answer changed as Codex changed:
+
+- On July 31, 2026,
+  [Eric Provencher (@pvncher on X)](https://x.com/pvncher)
+  [warned users not to patch their model catalog](https://x.com/pvncher/status/2083300990350954981)
+  to force Luna into capabilities that were not natively exposed.
+- On August 15, he announced that Multi-Agent V2 coordinators could
+  [delegate to any supported model, including Luna](https://x.com/pvncher/status/2088641056237580632).
+- He then described
+  [two subagent tiers](https://x.com/pvncher/status/2088666195381592153):
+  collaborative Sol/Terra agents and terminal Luna/older-model leaves.
+
+Those statements are not contradictory; they describe two points in a product
+rollout. The enduring rule is **do not force an internal capability**. The new
+native route lets Sol or Terra delegate to Luna without a catalog patch.
+
+This repository turns that distinction into a conservative default, while
+keeping official documentation and observed runtime metadata above social
+posts in the evidence hierarchy.
+
+## Start here
+
+| If you want to… | Read… |
+|---|---|
+| Install this on a neutral Codex setup | [Five-minute quickstart](docs/QUICKSTART.md) |
+| Understand why Luna is now native but still a leaf | [Evolution, evidence, and attribution](docs/EVOLUTION-AND-EVIDENCE.md) |
+| Decide between Sol, Luna, and Terra in real tasks | [Routing recipes](docs/ROUTING-RECIPES.md) |
+| Understand authority, context, and escalation | [Architecture](docs/ARCHITECTURE.md) |
+| Prove the actual model that ran | [Verification](docs/VERIFICATION.md) |
+| Check what is documented, observed, or still client-specific | [Compatibility and proof status](docs/COMPATIBILITY.md) |
+| See what changed in the current workflow | [Changelog](CHANGELOG.md) |
 
 ## Operating model
 
@@ -104,6 +145,9 @@ migration, production changes, or a public/cross-system contract.
 One file has one owner in a batch. A child stops on a protected boundary and
 after two distinct evidence-based attempts fail.
 
+For concrete Browser, repository, implementation, and collaborative-branch
+packets, see [Routing recipes](docs/ROUTING-RECIPES.md).
+
 ## Native configuration fragment
 
 Merge these values into the existing tables; never append duplicate TOML
@@ -135,9 +179,13 @@ Install the workflow documented at:
 https://github.com/augiefra/codex-sol-terra-orchestration
 
 Read README.md, SECURITY.md, docs/INSTALL-WITH-CODEX.md,
+docs/QUICKSTART.md, docs/ARCHITECTURE.md,
+docs/EVOLUTION-AND-EVIDENCE.md,
 docs/STANDALONE-LUNA-TASKS.md, templates/config.fragment.toml, and
-templates/AGENTS-routing.md completely before changing anything. Audit my
-existing Codex configuration and global AGENTS.md first.
+templates/AGENTS-routing.md completely before changing anything. Resolve the
+active Codex home from CODEX_HOME or ~/.codex. Read-only audit its config,
+global AGENTS.md, managed policy, and project overrides first. Report the
+repository commit inspected.
 
 Merge, do not replace. Preserve every unrelated setting, including approval,
 sandbox, authentication, network, MCP, plugin, connector, project-trust,
@@ -157,8 +205,11 @@ Do not create custom agent profiles, add model_catalog_json, patch a model
 cache, or enable undocumented/internal feature flags. Keep the optional
 separate Luna Max user task behind explicit approval for each new task.
 
-Back up only files that will change. Show the diff, parse changed TOML, run the
-static verifier, and perform the read-only native smoke tests in
+Show the exact proposed merge, override risks, backup targets, and validation
+plan, then wait for my confirmation before writing. After approval, back up
+only existing files that will change and update the unique marked routing
+block in place. Show the diff, parse changed TOML, run the static verifier, and
+perform the read-only native smoke tests in
 docs/VERIFICATION.md. Verify every effective model from its own exact runtime
 metadata or canonical rollout; never infer it from configuration alone.
 
@@ -231,7 +282,20 @@ documents the stable `features.multi_agent` flag and agent settings used here.
 Eric Provencher's public explanations of collaborative Sol/Terra agents and
 leaf-only Luna agents are useful product-team guidance, but this repository
 treats official documentation and observed runtime metadata as the product
-contract. See [Official sources](docs/OFFICIAL-SOURCES.md).
+contract. See [Sources and evidence boundaries](docs/OFFICIAL-SOURCES.md) and
+the dated [evolution timeline](docs/EVOLUTION-AND-EVIDENCE.md).
+
+## Acknowledgements
+
+Special thanks to
+[Eric Provencher (@pvncher on X)](https://x.com/pvncher) for publicly
+documenting both the original capability boundary and the August 2026 rollout
+that enabled collaborative agents to delegate to Luna leaves. His posts made
+the distinction between an obsolete catalog workaround and the native product
+behavior unusually clear.
+
+This is an independent community project. Eric Provencher and OpenAI have not
+reviewed, sponsored, or endorsed this repository.
 
 ## Repository map
 
@@ -239,18 +303,26 @@ contract. See [Official sources](docs/OFFICIAL-SOURCES.md).
 .
 ├── README.md
 ├── AGENTS.md
+├── CHANGELOG.md
 ├── SECURITY.md
 ├── docs/
 │   ├── ARCHITECTURE.md
+│   ├── COMPATIBILITY.md
+│   ├── EVOLUTION-AND-EVIDENCE.md
 │   ├── INSTALL-WITH-CODEX.md
 │   ├── MANUAL-INSTALL.md
 │   ├── OFFICIAL-SOURCES.md
+│   ├── QUICKSTART.md
+│   ├── ROUTING-RECIPES.md
 │   ├── STANDALONE-LUNA-TASKS.md
 │   ├── TROUBLESHOOTING.md
 │   └── VERIFICATION.md
 ├── scripts/
 │   ├── inspect_runtime_model.py
 │   └── verify_install.py
+├── tests/
+│   ├── test_docs.py
+│   └── test_scripts.py
 └── templates/
     ├── AGENTS-routing.md
     └── config.fragment.toml
