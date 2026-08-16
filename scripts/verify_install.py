@@ -65,7 +65,10 @@ def verify_codex_home(root: Path) -> Report:
     # every required-value check whenever parsing succeeded.
     if config is not None:
         report.require(config.get("model") == "gpt-5.6-sol", "parent default model is Sol")
-        report.require(config.get("model_reasoning_effort") == "max", "parent default effort is Max")
+        report.require(
+            config.get("model_reasoning_effort") == "ultra",
+            "parent default effort is Ultra",
+        )
         features = config.get("features") if isinstance(config.get("features"), dict) else {}
         agents = config.get("agents") if isinstance(config.get("agents"), dict) else {}
         report.require(features.get("multi_agent") is True, "multi_agent feature is enabled")

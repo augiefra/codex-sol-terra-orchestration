@@ -18,7 +18,7 @@ It checks:
 
 - `config.toml` exists, parses, and contains every required value even when the
   file is otherwise empty;
-- parent default is Sol Max;
+- parent default is Sol Ultra;
 - `features.multi_agent` and `agents.enabled` are true;
 - native child default is Luna Max;
 - concurrency ceiling is eight;
@@ -32,7 +32,7 @@ It checks:
 
 ## 2. Native default-leaf smoke test
 
-Create a fresh projectless task whose parent is Sol Max and send:
+Create a fresh projectless task whose parent is Sol Ultra and send:
 
 ```text
 ROUTING SMOKE TEST ONLY. Do not modify files, settings, repositories, or
@@ -63,7 +63,7 @@ eb30541a07d807c3792d2331b51b3aee29d4b5adc9b4d62d62f82cff43aa4779
 Expected runtime after a successful installation:
 
 ```text
-Parent: gpt-5.6-sol / max
+Parent: gpt-5.6-sol / ultra
 Child:  gpt-5.6-luna / max
 ```
 
@@ -103,7 +103,7 @@ branch must itself delegate and integrate a leaf result.
 ```text
 TERRA COORDINATION SMOKE TEST ONLY. Read-only; no file or external mutation.
 
-Remain the Sol Max parent. Spawn exactly one native branch lead explicitly as
+Remain the Sol Ultra parent. Spawn exactly one native branch lead explicitly as
 gpt-5.6-terra with high reasoning and a self-contained packet. The Terra branch
 must spawn exactly one terminal child using the configured default model and
 effort. That leaf must not spawn another agent.
@@ -124,7 +124,7 @@ Expected hash:
 Expected runtime:
 
 ```text
-Parent:      gpt-5.6-sol / max
+Parent:      gpt-5.6-sol / ultra
 Branch lead: gpt-5.6-terra / high
 Leaf:        gpt-5.6-luna / max
 ```

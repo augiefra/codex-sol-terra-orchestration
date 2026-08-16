@@ -6,7 +6,7 @@ summary; tutorials and examples must not redefine the policy independently.
 
 ## Objective
 
-Keep authority and cross-cutting judgment in a Sol Max parent while moving
+Keep authority and cross-cutting judgment in a Sol Ultra parent while moving
 independent, noisy, or high-volume execution into native Luna Max leaves.
 Select Terra High only when a bounded branch must itself coordinate agents,
 communicate proactively, delegate recursively, or integrate dependent
@@ -30,7 +30,7 @@ That distinction is supported by the current official
 and was described explicitly by
 [Eric Provencher](https://x.com/pvncher/status/2088666195381592153) during the
 2026-08-15 rollout. This repository then adds an opinionated local policy:
-Sol Max owns the parent, Luna Max is the ordinary leaf default, and Terra High
+Sol Ultra owns the parent, Luna Max is the ordinary leaf default, and Terra High
 is selected only for a branch that genuinely needs a coordinator.
 
 See [Evolution, evidence, and attribution](EVOLUTION-AND-EVIDENCE.md) for the
@@ -39,7 +39,7 @@ dated rollout history and evidence hierarchy.
 ## Topology
 
 ```text
-Sol Max parent
+Sol Ultra parent
 ├── Luna Max leaf                 independent terminal assignment
 ├── Luna Max leaf                 independent terminal assignment
 └── Terra High branch lead        collaborative bounded subproject
@@ -52,7 +52,7 @@ middle layer.
 
 ## Responsibilities
 
-### Sol Max — parent owner
+### Sol Ultra — parent owner
 
 Sol frames the objective and invariants, owns user authorization, decides
 architecture/product/security/production questions, chooses the execution
@@ -189,9 +189,12 @@ child. Never silently replace a manual choice to recreate the preferred
 topology. Custom roles are a supported Codex feature, but this baseline does
 not install or require one.
 
-Ultra may delegate more proactively, but it is not required for this workflow.
-Sol Max follows applicable `AGENTS.md` routing instructions while avoiding the
-default latency and token overhead of Ultra.
+Ultra is the default parent effort for this workflow because the parent is an
+orchestrator and suitable work is intentionally separable. Applicable
+`AGENTS.md` routing instructions still define the authority, ownership,
+validation, and escalation boundaries; Ultra is not permission to maximize the
+number of agents. The profile accepts Ultra's additional latency and token use
+in exchange for proactive delegation and deeper parent reasoning.
 
 ## Runtime identity
 

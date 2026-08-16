@@ -6,7 +6,7 @@ workflow documented in this repository.
 ## Result
 
 ```text
-Sol Max parent
+Sol Ultra parent
 ├── unpinned native child -> Luna Max leaf
 └── explicitly selected collaborative branch -> Terra High
 ```
@@ -68,7 +68,7 @@ Codex should merge these values into existing tables:
 
 ```toml
 model = "gpt-5.6-sol"
-model_reasoning_effort = "max"
+model_reasoning_effort = "ultra"
 
 [features]
 multi_agent = true
@@ -95,7 +95,7 @@ block in place on a later install; do not append a second copy.
 Codex should merge [AGENTS-routing.md](../templates/AGENTS-routing.md) into the
 existing global instructions. The important rules are:
 
-- keep the main owner on Sol Max unless the user manually selected another
+- keep the main owner on Sol Ultra unless the user manually selected another
   parent model;
 - route independent, bounded, terminal work to Luna Max;
 - select Terra High explicitly only when that branch must communicate with or
@@ -123,7 +123,7 @@ running.
 Expected result:
 
 ```text
-Parent: gpt-5.6-sol / max
+Parent: gpt-5.6-sol / ultra
 Child:  gpt-5.6-luna / max
 ```
 

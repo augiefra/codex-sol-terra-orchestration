@@ -29,7 +29,7 @@ create a custom agent, add a model catalog override, or use internal feature
 flags.
 
 Target topology:
-- parent default: gpt-5.6-sol with max reasoning;
+- parent default: gpt-5.6-sol with ultra reasoning;
 - native leaf default: gpt-5.6-luna with max reasoning;
 - explicit collaborative branch lead: gpt-5.6-terra with high reasoning;
 - features.multi_agent and agents.enabled enabled;

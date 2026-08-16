@@ -1,11 +1,11 @@
 # Evolution, evidence, and attribution
 
 > Status: checked against public sources and the current local Codex runtime on
-> 2026-08-15. Model availability and orchestration behavior can change; verify
+> 2026-08-16. Model availability and orchestration behavior can change; verify
 > the current official documentation and your own runtime before treating this
 > document as permanent product behavior.
 
-This page explains why the repository now uses Sol Max as the parent, Luna Max
+This page explains why the repository now uses Sol Ultra as the parent, Luna Max
 as the default terminal subagent, and Terra High only for a collaborative
 branch. It also explains why older advice about Luna was reasonable when it was
 published and is no longer the right installation strategy.
@@ -87,7 +87,7 @@ That public explanation is the clearest rationale for this repository's
 topology:
 
 ```text
-Sol Max parent
+Sol Ultra parent
 ├── Luna Max leaf
 ├── Luna Max leaf
 └── Terra High collaborative branch
@@ -97,6 +97,15 @@ Sol Max parent
 
 Sol can coordinate Luna leaves directly. Terra is inserted only when a bounded
 subproject needs its own collaborative coordinator.
+
+### 2026-08-16 — quality-first reasoning profile
+
+The repository changed the parent default from Sol Max to Sol Ultra so the
+owner can proactively delegate suitable independent work. It intentionally
+kept Luna Max for every default leaf. OpenAI documents that higher effort costs
+more time and tokens and recommends using the lowest sufficient effort; keeping
+Luna at Max is therefore a local quality/cost decision, not a claim that every
+Codex installation should do the same.
 
 ## What changed in this repository
 

@@ -29,7 +29,7 @@ merge its top-level values plus the values in `[features]` and `[agents]` into
 matching existing tables. Do not paste the fragment at the end when the table
 is already present: duplicate TOML keys or tables are invalid.
 
-The fragment sets Sol Max as the parent default, enables native multi-agent
+The fragment sets Sol Ultra as the parent default, enables native multi-agent
 tools, caps child concurrency at eight, and sets Luna Max as the native leaf
 default. It adds no custom agent, catalog override, compatibility patch, or
 internal feature flag.

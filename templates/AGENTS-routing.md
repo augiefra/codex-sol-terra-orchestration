@@ -3,7 +3,7 @@
 ## Model identification
 
 - End every completed task with a final line exactly formatted as
-  `Model : <Model> <effort>`, for example `Model : Sol Max`,
+  `Model : <Model> <effort>`, for example `Model : Sol Ultra`,
   `Model : Luna Max`, or `Model : Terra High`.
 - Report the model and reasoning effort actually used for that process, not
   merely the requested configuration or default.
@@ -19,7 +19,7 @@
 
 ## Native delegation contract
 
-- Sol Max is the default parent owner when the user has not manually selected
+- Sol Ultra is the default parent owner when the user has not manually selected
   another model. It frames the objective, preserves authority, makes
   architecture/product/security/production decisions, reviews evidence, and
   concludes.
