@@ -10,9 +10,10 @@ A native, evidence-backed Codex workflow:
   communicate proactively, delegate recursively, or perform materially deeper
   intermediate reasoning.
 
-The workflow uses documented `features.multi_agent` and `[agents]` settings.
-It requires no model-catalog patch, compatibility override, internal V2 flag,
-or custom agent profile.
+The workflow uses the native `features.multi_agent` and stable opt-in
+`features.multi_agent_v2` switches together with `[agents]` defaults. It
+requires no model-catalog patch, compatibility override, or custom agent
+profile.
 
 > [!NOTE]
 > **Routing profile updated 2026-08-16:** Sol Ultra is now the default parent
@@ -33,6 +34,10 @@ or custom agent profile.
 
 The safe answer changed as Codex changed:
 
+- The official
+  [ChatGPT and Codex changelog](https://learn.chatgpt.com/docs/changelog)
+  records Multi-Agent V2 becoming a stable opt-in experience and later adding
+  support for leaf models.
 - On July 31, 2026,
   [Eric Provencher (@pvncher on X)](https://x.com/pvncher)
   [warned users not to patch their model catalog](https://x.com/pvncher/status/2083300990350954981)
@@ -44,8 +49,9 @@ The safe answer changed as Codex changed:
   collaborative Sol/Terra agents and terminal Luna/older-model leaves.
 
 Those statements are not contradictory; they describe two points in a product
-rollout. The enduring rule is **do not force an internal capability**. The new
-native route lets Sol or Terra delegate to Luna without a catalog patch.
+rollout. The enduring rule is **use the supported feature surface, never patch
+the model catalog**. The current native route explicitly enables Multi-Agent
+V2 and lets Sol or Terra delegate to Luna without a catalog patch.
 
 This repository turns that distinction into a conservative default, while
 keeping official documentation and observed runtime metadata above social
@@ -166,6 +172,7 @@ model_reasoning_effort = "ultra"
 
 [features]
 multi_agent = true
+multi_agent_v2 = true
 
 [agents]
 enabled = true
@@ -202,15 +209,18 @@ Install these native defaults:
 - gpt-5.6-sol with ultra reasoning for the parent;
 - gpt-5.6-luna with max reasoning for ordinary native leaf subagents;
 - max_concurrent_threads_per_session = 8;
-- features.multi_agent = true and agents.enabled = true.
+- features.multi_agent = true, features.multi_agent_v2 = true, and
+  agents.enabled = true.
 
 Install the routing rule that explicitly chooses gpt-5.6-terra/high only for a
 collaborative branch that needs proactive inter-agent coordination, recursive
 delegation, or materially deeper intermediate reasoning.
 
 Do not create custom agent profiles, add model_catalog_json, patch a model
-cache, or enable undocumented/internal feature flags. Keep the optional
-separate Luna Max user task behind explicit approval for each new task.
+cache, or add unknown/unsupported feature flags. Use only the stable native
+`multi_agent` and `multi_agent_v2` switches exposed by the installed client.
+Keep the optional separate Luna Max user task behind explicit approval for
+each new task.
 
 Show the exact proposed merge, override risks, backup targets, and validation
 plan, then wait for my confirmation before writing. After approval, back up
@@ -284,7 +294,11 @@ The official [Subagents documentation](https://learn.chatgpt.com/docs/agent-conf
 documents native subagents, Luna for fast narrowly scoped agents, model and
 effort overrides, applicable `AGENTS.md` delegation, and `[agents]` defaults.
 The official [configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
-documents the stable `features.multi_agent` flag and agent settings used here.
+documents the general `features.multi_agent` flag and agent settings used here.
+The official [ChatGPT and Codex changelog](https://learn.chatgpt.com/docs/changelog)
+records the stable opt-in Multi-Agent V2 experience and leaf-model support.
+The broad configuration reference may lag that release-specific V2 surface;
+the installed client must expose `multi_agent_v2` before it is enabled.
 
 Eric Provencher's public explanations of collaborative Sol/Terra agents and
 leaf-only Luna agents are useful product-team guidance, but this repository

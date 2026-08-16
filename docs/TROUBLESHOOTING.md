@@ -2,18 +2,20 @@
 
 ## Native subagents are unavailable
 
-1. Parse `~/.codex/config.toml` and check `[features].multi_agent = true` and
-   `[agents].enabled = true`.
-2. Check that no project-local configuration or managed policy overrides the
+1. Parse `~/.codex/config.toml` and check `[features].multi_agent = true`,
+   `[features].multi_agent_v2 = true`, and `[agents].enabled = true`.
+2. Run `codex features list` with the exact Codex binary used by the client;
+   confirm both multi-agent features are exposed and enabled.
+3. Check that no project-local configuration or managed policy overrides the
    user configuration.
-3. Open a fresh task or fully restart Codex if the active client does not
+4. Open a fresh task or fully restart Codex if the active client does not
    reload global settings dynamically.
-4. Verify the active client exposes native multi-agent workflows and Luna in
+5. Verify the active client exposes native multi-agent workflows and Luna in
    the spawn model surface.
 
-Do not create a custom profile, enable an undocumented internal feature, patch
-a model cache, or add a model-catalog override as a fallback. Report the exact
-capability blocker.
+If `multi_agent_v2` is absent, update the client instead of adding an unknown
+key. Do not create a custom profile, patch a model cache, or add a model-catalog
+override as a fallback. Report the exact capability blocker.
 
 ## A child uses a different model or effort
 

@@ -4,14 +4,21 @@
 
 ### Changed
 
+- Corrected the earlier V2 conclusion: current Codex exposes
+  `features.multi_agent_v2` as a stable opt-in switch, and the native
+  Sol/Terra-to-Luna leaf route requires it.
+- Added the V2 switch to the install fragment, verifier, smoke-test guidance,
+  compatibility notes, and tests.
+- Added official changelog evidence for stabilized Multi-Agent V2 and
+  leaf-model support.
 - Made Sol Ultra the default parent so architecture threads can proactively
   delegate suitable independent work.
 - Kept Luna Max as the default native terminal leaf and for every documented
   Luna execution path.
 - Kept Terra High only for a bounded collaborative branch that must coordinate
   or recursively delegate.
-- Retained the documented `features.multi_agent` flag and the prohibition on
-  catalog patches and undocumented `multi_agent_v2` configuration.
+- Retained the prohibition on model-catalog patches, compatibility overrides,
+  custom routing profiles, and unknown/unsupported feature flags.
 
 ### Trade-off
 

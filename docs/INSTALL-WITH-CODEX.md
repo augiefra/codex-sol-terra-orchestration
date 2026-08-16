@@ -24,15 +24,17 @@ checks.
 Report the repository commit you inspected. Do not execute an uninspected
 remote script.
 
-Merge only the documented keys and rules. Do not replace either complete file,
-create a custom agent, add a model catalog override, or use internal feature
-flags.
+Merge only the supported keys and rules. Do not replace either complete file,
+create a custom agent, add a model catalog override, or use unknown feature
+flags. Run `codex features list` first and require the installed client to
+expose `multi_agent_v2`; update the client instead of inventing a fallback if
+it does not.
 
 Target topology:
 - parent default: gpt-5.6-sol with ultra reasoning;
 - native leaf default: gpt-5.6-luna with max reasoning;
 - explicit collaborative branch lead: gpt-5.6-terra with high reasoning;
-- features.multi_agent and agents.enabled enabled;
+- features.multi_agent, features.multi_agent_v2, and agents.enabled enabled;
 - max_concurrent_threads_per_session set to 8.
 
 Merge the native routing policy from AGENTS-routing.md: Luna is a terminal
@@ -57,7 +59,8 @@ back up only an existing file that will change, using a timestamped recoverable
 copy. Perform an idempotent merge: update the one marked routing block in place
 and never append a duplicate block, table, or key. Show the resulting diff.
 
-Validate changed TOML, run scripts/verify_install.py, and run the read-only
+Validate changed TOML, confirm `codex features list` reports both multi-agent
+features enabled, run scripts/verify_install.py, and run the read-only
 smoke tests in docs/VERIFICATION.md. Prove every process's runtime identity
 from their own exact rollout when available; otherwise report that it is not
 exposed. Do not commit, push, deploy, publish, or mutate an external system.
@@ -97,12 +100,14 @@ section in place.
 ## Validation and rollback
 
 1. Parse every changed TOML file.
-2. Run `python3 scripts/verify_install.py` against the target Codex home.
-3. Open a fresh task. Fully quit and restart Codex only if that fresh task does
+2. Run `codex features list` and verify that `multi_agent` and
+   `multi_agent_v2` are both enabled.
+3. Run `python3 scripts/verify_install.py` against the target Codex home.
+4. Open a fresh task. Fully quit and restart Codex only if that fresh task does
    not discover the merged configuration, then create another fresh task.
-4. Run the read-only native smoke tests in [VERIFICATION.md](VERIFICATION.md):
+5. Run the read-only native smoke tests in [VERIFICATION.md](VERIFICATION.md):
    Sol-to-Luna, parallel Luna leaves, and Sol-to-Terra-to-Luna.
-5. Retain the timestamped copies until the smoke test is accepted.
+6. Retain the timestamped copies until the smoke test is accepted.
 
 To roll back, restore only the specific backups created before this install;
 do not overwrite unrelated state created later.

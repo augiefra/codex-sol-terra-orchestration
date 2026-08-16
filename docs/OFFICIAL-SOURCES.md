@@ -36,6 +36,11 @@ to conflict, check their dates and scope before deciding that either is wrong.
   `agents.default_subagent_model`,
   `agents.default_subagent_reasoning_effort`, and
   `agents.max_concurrent_threads_per_session`.
+- [ChatGPT and Codex changelog](https://learn.chatgpt.com/docs/changelog)
+  records Multi-Agent V2 becoming a stable opt-in experience with configurable
+  subagent models and reasoning, followed by support for leaf models in V2.
+  This release-specific source establishes the V2 feature used here even when
+  the broad configuration-reference page has not yet surfaced the same key.
 - [GPT-5.6 model guidance](https://developers.openai.com/api/docs/guides/latest-model)
   positions Sol for frontier capability, Terra for a balance of intelligence
   and cost, and Luna for efficient high-volume workloads. It also documents
@@ -46,8 +51,10 @@ to conflict, check their dates and scope before deciding that either is wrong.
   routing decision is correct or that a task emits a fixed percentage fewer
   tokens.
 
-These are the sources for every public configuration key used by this
-repository. The repository does not require an undocumented key.
+These sources, together with `codex features list` from the exact installed
+client, establish the supported configuration surface used by this repository.
+The repository requires the stable opt-in `multi_agent_v2` feature, but no
+unknown or undocumented key.
 
 The official documentation also supports custom agents. This repository does
 not claim that custom agents are bad or unsupported; it simply does not require
@@ -133,8 +140,9 @@ The following are deliberate workflow choices, not universal OpenAI rules:
 - creating a separate user-owned Luna task requires explicit approval;
 - final responses identify the actual runtime when it can be proven.
 
-The repository does not prescribe a model catalog, cache patch, compatibility
-override, internal feature flag, or custom agent profile.
+The repository prescribes the stable native `multi_agent` and
+`multi_agent_v2` switches. It does not prescribe a model catalog, cache patch,
+compatibility override, unknown feature flag, or custom agent profile.
 
 ## Attribution and independence
 

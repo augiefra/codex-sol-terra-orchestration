@@ -72,6 +72,10 @@ def verify_codex_home(root: Path) -> Report:
         features = config.get("features") if isinstance(config.get("features"), dict) else {}
         agents = config.get("agents") if isinstance(config.get("agents"), dict) else {}
         report.require(features.get("multi_agent") is True, "multi_agent feature is enabled")
+        report.require(
+            features.get("multi_agent_v2") is True,
+            "multi_agent_v2 feature is enabled",
+        )
         report.require(agents.get("enabled") is True, "native agents are enabled")
         report.require(
             agents.get("default_subagent_model") == "gpt-5.6-luna",
@@ -86,10 +90,6 @@ def verify_codex_home(root: Path) -> Report:
             "max_concurrent_threads_per_session is 8",
         )
         report.require("model_catalog_json" not in config, "no model catalog override is configured")
-        report.require(
-            "multi_agent_v2" not in features,
-            "no internal multi-agent V2 configuration is present",
-        )
 
     instructions_path = root / "AGENTS.md"
     if not instructions_path.is_file():
@@ -191,7 +191,6 @@ def verify_codex_home(root: Path) -> Report:
                 "no named custom Luna profile is referenced by routing policy",
             )
             report.require("model_catalog_json" not in instructions, "no model catalog override is recommended")
-            report.require("multi_agent_v2" not in instructions, "no internal multi_agent_v2 flag is recommended")
 
     return report
 

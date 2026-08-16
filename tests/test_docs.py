@@ -39,6 +39,7 @@ class DocumentationTests(unittest.TestCase):
             "https://x.com/pvncher/status/2088666195381592153",
             "https://learn.chatgpt.com/docs/agent-configuration/subagents",
             "https://learn.chatgpt.com/docs/config-file/config-reference",
+            "https://learn.chatgpt.com/docs/changelog",
         }
         self.assertEqual({url for url in required if url not in sources}, set())
         self.assertIn("independent community project", sources.lower())

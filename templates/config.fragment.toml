@@ -8,8 +8,11 @@ model = "gpt-5.6-sol"
 model_reasoning_effort = "ultra"
 
 [features]
-# Stable multi-agent collaboration tools.
+# Stable multi-agent collaboration tools and the opt-in V2 runtime that lets
+# collaborative Sol/Terra agents delegate to supported leaf models such as
+# Luna. Both switches are intentionally explicit for auditability.
 multi_agent = true
+multi_agent_v2 = true
 
 [agents]
 enabled = true
