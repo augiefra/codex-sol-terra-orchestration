@@ -11,12 +11,15 @@ Sol Ultra parent
 └── explicitly selected collaborative branch -> Terra High
 ```
 
-You do not need a custom agent, model-catalog override, cache patch, or
-`multi_agent_v2` setting.
+You do not need a custom agent, model-catalog override, or cache patch. You do
+need the stable opt-in `multi_agent_v2` feature exposed by a current Codex
+client.
 
 ## Prerequisites
 
 - a current Codex client whose model picker exposes Sol, Terra, and Luna;
+- `codex features list` must expose `multi_agent_v2`; update Codex instead of
+  adding an unknown key when it does not;
 - Python 3.11 or newer for the read-only verifier;
 - `openssl` or `shasum -a 256` for the smoke-test hash;
 - permission to edit the active Codex home, normally `~/.codex` but possibly
@@ -72,6 +75,7 @@ model_reasoning_effort = "ultra"
 
 [features]
 multi_agent = true
+multi_agent_v2 = true
 
 [agents]
 enabled = true
@@ -80,8 +84,10 @@ default_subagent_model = "gpt-5.6-luna"
 default_subagent_reasoning_effort = "max"
 ```
 
-`multi_agent` and `agents.enabled` are explicit here for auditability even when
-the current client already enables them by default.
+`multi_agent`, `multi_agent_v2`, and `agents.enabled` are explicit here for
+auditability. Multi-Agent V2 is the stable opt-in runtime that permits a
+capable Sol/Terra coordinator to delegate to supported Luna leaves; it does not
+make Luna a collaborative peer.
 
 Do not paste a second `[features]` or `[agents]` table into a file that already
 has one. Merge keys into the existing table instead.
@@ -112,7 +118,10 @@ After the files are merged, run the verifier from the checked-out repository:
 
 ```bash
 python3 scripts/verify_install.py --codex-home "${CODEX_HOME:-$HOME/.codex}"
+codex features list
 ```
+
+The feature listing must show both `multi_agent` and `multi_agent_v2` enabled.
 
 Then open a new projectless task and run the first smoke test in
 [VERIFICATION.md](VERIFICATION.md). If that fresh task still uses pre-install
@@ -149,7 +158,7 @@ Terra branch.
 | Old workaround | Current native workflow |
 |---|---|
 | Copy and patch a model catalog | Use documented `[agents]` defaults |
-| Force Luna into a V2 peer slot | Use Luna as a terminal leaf |
+| Force Luna into a V2 peer slot | Enable native V2 and use Luna as a terminal leaf |
 | Remember custom `luna_worker` profiles | Describe the objective; let routing rules choose |
 | Treat every large task as Terra | Route by coordination and risk, not size |
 | Trust the requested model label | Verify the actual rollout |

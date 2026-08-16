@@ -37,12 +37,14 @@ does not provide a security boundary.
 
 ## Native configuration only
 
-This workflow intentionally uses documented native multi-agent settings. Do
-not add an internal feature flag, model catalog override, or custom agent as a
-fallback. If native support is unavailable, preserve the current configuration
-and investigate the client version, managed policy, and documented settings.
-Native Luna leaf support and the optional separate Luna Max task do not alter
-this rule.
+This workflow intentionally uses the stable native `multi_agent` and
+`multi_agent_v2` feature switches plus documented `[agents]` defaults. Do not
+add an unknown/unsupported feature flag, model catalog override, or custom
+agent as a fallback. If `multi_agent_v2` is not exposed by the installed
+client, preserve the current configuration and investigate the client version,
+managed policy, and official release notes before changing anything. Native
+Luna leaf support and the optional separate Luna Max task do not alter this
+rule.
 
 ## Reporting a security issue
 

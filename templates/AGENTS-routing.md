@@ -19,6 +19,10 @@
 
 ## Native delegation contract
 
+- This topology assumes the stable native switches `features.multi_agent =
+  true` and `features.multi_agent_v2 = true`. Multi-Agent V2 lets a capable
+  Sol or Terra coordinator delegate to a supported Luna leaf; it does not make
+  Luna a collaborative peer.
 - Sol Ultra is the default parent owner when the user has not manually selected
   another model. It frames the objective, preserves authority, makes
   architecture/product/security/production decisions, reviews evidence, and
@@ -81,8 +85,8 @@
 - Use the minimum useful number of agents. Eight concurrent children is a
   ceiling, never a target.
 - Do not add a custom agent profile, model-catalog override, compatibility
-  patch, or undocumented/internal feature flag to force routing already
-  exposed by the native runtime.
+  patch, or unknown/unsupported feature flag. Use only the stable native
+  `multi_agent` and `multi_agent_v2` switches exposed by the installed client.
 
 ## Optional separate Luna Max user task
 

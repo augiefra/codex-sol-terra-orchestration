@@ -36,5 +36,6 @@ routing instructions installed into a user's Codex configuration.
 - Preserve the optional separate user-owned Luna Max task for exceptionally
   large autonomous batches, created only after explicit approval. Keep it
   distinct from native Luna leaf delegation.
-- Do not add a custom agent profile, internal feature flag, compatibility
-  override, or model-catalog patch for routing already exposed natively.
+- Require the stable native `features.multi_agent_v2` switch for the current
+  leaf-model route. Do not add unknown/unsupported feature flags, a custom
+  agent profile, compatibility override, or model-catalog patch.

@@ -15,6 +15,7 @@ Last maintained check: **2026-08-16**.
 | Item | Status | Evidence or required check |
 |---|---|---|
 | `features.multi_agent` | Public, documented setting | Official configuration reference |
+| `features.multi_agent_v2` | Stable opt-in feature in current Codex releases | Official ChatGPT and Codex changelog plus `codex features list` on the target client |
 | `[agents].enabled` and child defaults | Public, documented settings | Official configuration reference and Subagents docs |
 | Sol and Terra as collaborative coordinators | Current capability guidance | Official model guidance plus Eric Provencher's dated rollout explanation |
 | Luna as a native terminal leaf | Current capability guidance; observed locally with an explicit Luna Max child | Official Luna subagent guidance, Eric's 2026-08-15 posts, exact child rollout |
@@ -22,10 +23,13 @@ Last maintained check: **2026-08-16**.
 | Terra can recursively delegate to a Luna leaf | Repository topology expectation | Must pass the conditional Terra-to-Luna smoke test on the target client |
 | Model/effort footer | Reporting convention only | Must be backed by injected metadata or the exact owning rollout |
 
-The maintainer's local static baseline on 2026-08-16 used
-`codex-cli 0.148.0-alpha.9`, parsed the native Sol Ultra / Luna Max settings, and
-contained no `multi_agent_v2` key or model-catalog override. This is a dated
-observation, not a minimum-version guarantee.
+The maintainer's corrected local baseline on 2026-08-16 used
+`codex-cli 0.148.0-alpha.9`, where `codex features list` exposed
+`multi_agent_v2` as stable and opt-in. With `multi_agent = true` and
+`multi_agent_v2 = true`, a fresh strict-config run proved an exact
+`gpt-5.6-sol/ultra` parent and an unpinned `gpt-5.6-luna/max` child from their
+separate canonical rollouts. No model-catalog override was present. This is a
+dated observation, not a minimum-version guarantee.
 
 ## What a successful test proves
 
@@ -53,8 +57,8 @@ Use this order after changing global settings:
 3. create another fresh task and repeat;
 4. inspect explicit spawn settings, custom roles, project config, and managed
    policy before changing anything else;
-5. never patch a model catalog or add an undocumented feature flag to make the
-   expected result appear.
+5. if `multi_agent_v2` is unavailable, update the client; never patch a model
+   catalog or add an unknown feature flag to make the expected result appear.
 
 An existing parent or child is not retroactively reconfigured by editing a
 file on disk.
@@ -76,6 +80,7 @@ changing the capability model in response to an announcement.
 
 - [Official Subagents documentation](https://learn.chatgpt.com/docs/agent-configuration/subagents)
 - [Official configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
+- [Official ChatGPT and Codex changelog](https://learn.chatgpt.com/docs/changelog)
 - [Eric Provencher: native delegation to Luna](https://x.com/pvncher/status/2088641056237580632)
 - [Eric Provencher: collaborative versus leaf tiers](https://x.com/pvncher/status/2088666195381592153)
 

@@ -21,10 +21,11 @@ owner of decisions and final acceptance.
 
 This document is not describing an ordinary native Luna leaf. The separate
 task is created through the client's user-task workflow, not `spawn_agent`.
-Do not use a custom agent profile, internal feature flag, compatibility patch,
-or model catalog override for either execution shape. Max gives Luna more
-reasoning budget; it does not turn a terminal worker into a collaborative
-branch coordinator.
+Do not use a custom agent profile, unknown feature flag, compatibility patch,
+or model catalog override for either execution shape. The native leaf route
+uses the stable `multi_agent_v2` feature exposed by the current client. Max
+gives Luna more reasoning budget; it does not turn a terminal worker into a
+collaborative branch coordinator.
 
 ## Admission gate
 

@@ -19,10 +19,11 @@ It checks:
 - `config.toml` exists, parses, and contains every required value even when the
   file is otherwise empty;
 - parent default is Sol Ultra;
-- `features.multi_agent` and `agents.enabled` are true;
+- `features.multi_agent`, `features.multi_agent_v2`, and `agents.enabled` are
+  true;
 - native child default is Luna Max;
 - concurrency ceiling is eight;
-- no model-catalog override or internal `multi_agent_v2` setting is present;
+- no model-catalog override is present;
 - global instructions define Luna as a leaf and Terra High as a conditional
   collaborative branch;
 - exactly one ordered v3 routing marker pair is installed;
@@ -66,6 +67,10 @@ Expected runtime after a successful installation:
 Parent: gpt-5.6-sol / ultra
 Child:  gpt-5.6-luna / max
 ```
+
+This test exercises the stable opt-in Multi-Agent V2 leaf route. Before the
+test, `codex features list` must report both `multi_agent` and
+`multi_agent_v2` enabled for the exact client binary under test.
 
 ## 3. Parallel Luna leaves
 
@@ -130,8 +135,8 @@ Leaf:        gpt-5.6-luna / max
 ```
 
 If the current client exposes Luna leaves but not recursive Terra delegation,
-report that exact capability boundary. Do not enable an undocumented flag or
-patch a catalog.
+report that exact capability boundary. Verify the stable V2 switch and client
+version; do not patch a catalog or add unknown feature fields.
 
 ## 5. Existing-thread test
 

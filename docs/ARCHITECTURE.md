@@ -12,9 +12,10 @@ Select Terra High only when a bounded branch must itself coordinate agents,
 communicate proactively, delegate recursively, or integrate dependent
 intermediate results.
 
-This uses Codex's documented `features.multi_agent` and `[agents]` settings.
-There is no custom role to install, compatibility layer to force, model cache
-to patch, or catalog to override.
+This uses Codex's native `features.multi_agent`, stable opt-in
+`features.multi_agent_v2`, and `[agents]` settings. There is no custom role to
+install, compatibility layer to force, model cache to patch, or catalog to
+override.
 
 ## Capability model versus local policy
 
@@ -223,6 +224,7 @@ the footer says `Model : non exposé par le runtime`.
   not a separate user task.
 - **Separate user task**: another top-level task created only after explicit
   user approval; it is not part of the current agent tree.
-- **Multi-Agent V2**: a runtime capability tier discussed by the product team,
-  not an undocumented configuration flag users should add. The supported
-  public switch used here is `features.multi_agent`.
+- **Multi-Agent V2**: the stable opt-in runtime used by capable coordinators to
+  delegate to supported models, including terminal Luna leaves. This workflow
+  explicitly enables `features.multi_agent_v2` alongside
+  `features.multi_agent`; it does not grant Luna peer-coordination capability.

@@ -30,6 +30,22 @@ the model that actually ran.
 
 ## Timeline
 
+### Official release track — V2 stabilizes and gains leaf models
+
+The official
+[ChatGPT and Codex changelog](https://learn.chatgpt.com/docs/changelog)
+records two decisive product changes: the opt-in Multi-Agent V2 experience was
+stabilized with configurable subagent models and reasoning levels, and V2 later
+added support for leaf models. This is the official release evidence that the
+current workflow should enable `features.multi_agent_v2` instead of treating
+that key as an unsupported workaround.
+
+The broad configuration reference still documents `multi_agent` and the
+`[agents]` surface without necessarily reflecting every release-specific V2
+key. On a target installation, the exact client resolves that gap through
+`codex features list`: enable V2 only when the installed client exposes it, and
+update the client rather than patching a catalog when it does not.
+
 ### 2026-07-24 — practical orchestration guidance
 
 [Eric Provencher](https://x.com/pvncher), who works on Codex DX at OpenAI,
@@ -71,8 +87,8 @@ Sol or Terra coordinator  ── delegates to ──>  Luna leaf
 Luna leaf                 ── does not become ─> collaborative peer
 ```
 
-This removed the need for the old catalog workaround. It did not turn Luna
-into a Sol- or Terra-like coordinator.
+This removed the need for the old catalog workaround. It requires the native
+V2 runtime, and it did not turn Luna into a Sol- or Terra-like coordinator.
 
 ### 2026-08-15 — the two-tier model is made explicit
 
@@ -115,7 +131,7 @@ The workflow evolved through three states:
 |---|---|---|---|
 | Initial native workflow | Terra High | Terra was the safe native collaborative worker. | Luna became attractive for high-volume terminal work. |
 | Rejected workaround | Forced Luna through a catalog or custom profile | It appeared to expose Luna before native support was complete. | It depended on internal compatibility metadata, could drift after updates, and contradicted product-team guidance. |
-| Current native workflow | Luna Max leaf | Current Codex supports delegation from V2 coordinators to supported leaf models, including Luna. | This is the current design; re-evaluate when official behavior changes. |
+| Current native workflow | Luna Max leaf | Current Codex supports delegation from V2 coordinators to supported leaf models, including Luna, with the stable opt-in V2 feature enabled. | This is the current design; re-evaluate when official behavior changes. |
 
 The repository URL retains its historical `sol-terra` name so existing links
 continue to work. The actual public title and architecture now include all
@@ -151,8 +167,9 @@ for delegation. Ultra can delegate more proactively.
 - the parent can grant authority the user did not grant;
 - the configured default proves the runtime result.
 
-This repository makes automatic routing predictable by combining documented
-`[agents]` defaults with explicit behavioral rules in `AGENTS.md`.
+This repository makes automatic routing predictable by combining the native
+`multi_agent` and `multi_agent_v2` switches, documented `[agents]` defaults,
+and explicit behavioral rules in `AGENTS.md`.
 
 ## Attribution and independence
 
@@ -177,6 +194,7 @@ When Codex updates materially:
 3. confirm that Luna remains listed for fast, narrow, clear, repeatable, or
    high-volume agents;
 4. confirm `[agents]` precedence and supported keys;
-5. run the smoke tests in [VERIFICATION.md](VERIFICATION.md) from a fresh task;
-6. update this timeline only when a dated source or observed runtime changes
+5. confirm `codex features list` exposes and enables `multi_agent_v2`;
+6. run the smoke tests in [VERIFICATION.md](VERIFICATION.md) from a fresh task;
+7. update this timeline only when a dated source or observed runtime changes
    the conclusion.

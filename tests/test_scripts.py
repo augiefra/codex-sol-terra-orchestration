@@ -61,6 +61,26 @@ class InstallVerifierTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("FAIL: default native leaf model is Luna", result.stdout)
 
+    def test_missing_multi_agent_v2_fails(self) -> None:
+        config = CONFIG_TEMPLATE.read_text(encoding="utf-8").replace(
+            "multi_agent_v2 = true\n",
+            "",
+        )
+        home = self.make_home(config, AGENTS_TEMPLATE.read_text(encoding="utf-8"))
+        result = self.run_verifier(home)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("FAIL: multi_agent_v2 feature is enabled", result.stdout)
+
+    def test_disabled_multi_agent_v2_fails(self) -> None:
+        config = CONFIG_TEMPLATE.read_text(encoding="utf-8").replace(
+            "multi_agent_v2 = true",
+            "multi_agent_v2 = false",
+        )
+        home = self.make_home(config, AGENTS_TEMPLATE.read_text(encoding="utf-8"))
+        result = self.run_verifier(home)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("FAIL: multi_agent_v2 feature is enabled", result.stdout)
+
     def test_duplicate_routing_marker_fails(self) -> None:
         agents = AGENTS_TEMPLATE.read_text(encoding="utf-8")
         home = self.make_home(
