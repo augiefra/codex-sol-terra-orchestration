@@ -4,7 +4,7 @@ This repository combines documented Codex capabilities, observed runtime
 evidence, and a local routing policy. Those categories are deliberately kept
 separate.
 
-> Last source review: 2026-08-15.
+> Last source review: 2026-08-16.
 
 ## Evidence hierarchy
 
@@ -26,6 +26,11 @@ to conflict, check their dates and scope before deciding that either is wrong.
   precedence. It describes `gpt-5.6-luna` for fast, narrowly scoped, clear,
   repeatable, or high-volume agents and `gpt-5.6-terra` for stronger efficient
   supporting agents.
+- [Codex model guidance](https://learn.chatgpt.com/docs/models) distinguishes
+  Max, which deepens one hard task, from Ultra, which uses subagents for
+  separable work. It also recommends the lowest effort that meets the required
+  quality bar. This repository deliberately chooses Sol Ultra and Luna Max as
+  an opinionated quality-first profile; that pairing is not an OpenAI default.
 - [Codex configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
   documents `features.multi_agent`, `agents.enabled`,
   `agents.default_subagent_model`,
@@ -114,7 +119,7 @@ version.
 
 The following are deliberate workflow choices, not universal OpenAI rules:
 
-- Sol Max is the default parent owner;
+- Sol Ultra is the default parent owner;
 - Luna Max is the ordinary native leaf default;
 - Terra High is explicitly selected for a collaborative branch;
 - Sol may coordinate several Luna leaves without inserting Terra;

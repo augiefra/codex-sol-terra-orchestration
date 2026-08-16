@@ -36,7 +36,7 @@ itself pin an unpinned child, which still resolves through `[agents]`, unless
 the user explicitly applied the manual choice to child work as well. An
 explicit child spawn selection always wins for that child.
 
-## The parent is not Sol Max
+## The parent is not Sol Ultra
 
 An explicit user choice, project-local configuration, CLI flag, profile, or
 managed policy may override the global parent default. Verify the current

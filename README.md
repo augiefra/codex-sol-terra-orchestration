@@ -2,7 +2,7 @@
 
 A native, evidence-backed Codex workflow:
 
-- **Sol Max** owns the parent thread, authority, architecture, review, and final
+- **Sol Ultra** owns the parent thread, authority, architecture, review, and final
   integration.
 - **Luna Max** is the default native **leaf subagent** for independent, bounded,
   repeatable, or high-volume work.
@@ -15,10 +15,10 @@ It requires no model-catalog patch, compatibility override, internal V2 flag,
 or custom agent profile.
 
 > [!NOTE]
-> **Updated 2026-08-15:** Codex coordinators with Multi-Agent V2 capabilities
-> can now delegate to supported leaf models, including Luna. Luna remains a
-> terminal leaf rather than a collaborative peer. The dated rollout history is
-> documented in
+> **Routing profile updated 2026-08-16:** Sol Ultra is now the default parent
+> and Luna Max remains the default terminal leaf. Codex coordinators can
+> delegate to supported leaf models, including Luna, without making Luna a
+> collaborative peer. The dated rollout history is documented in
 > [Evolution, evidence, and attribution](docs/EVOLUTION-AND-EVIDENCE.md).
 
 > [!IMPORTANT]
@@ -67,14 +67,14 @@ posts in the evidence hierarchy.
 
 | Role | Model and effort | Responsibility |
 |---|---|---|
-| Parent owner | `gpt-5.6-sol` / `max` | Frame scope, preserve authority boundaries, make cross-cutting decisions, review evidence, and conclude. |
+| Parent owner | `gpt-5.6-sol` / `ultra` | Frame scope, preserve authority boundaries, make cross-cutting decisions, proactively delegate suitable work, review evidence, and conclude. |
 | Default native leaf | `gpt-5.6-luna` / `max` | Complete one clear, independent assignment and return a concise, verified result. It does not coordinate peers or recursively delegate. |
 | Collaborative branch lead | `gpt-5.6-terra` / `high` | Coordinate a bounded subproject when proactive inter-agent communication or recursive delegation is genuinely needed. |
 | Optional separate batch task | `gpt-5.6-luna` / `max` | Process an exceptionally large autonomous batch after explicit user approval for a new user-owned task. |
 
 ```mermaid
 flowchart TD
-    U["User objective"] --> S["Sol Max: frame, authorize, decide"]
+    U["User objective"] --> S["Sol Ultra: frame, authorize, decide"]
     S --> Q{"Best execution shape?"}
     Q -->|"Decision, high risk, or tightly coupled"| S
     Q -->|"Independent and objectively verifiable"| L["Native Luna Max leaf"]
@@ -109,10 +109,17 @@ override explicitly to Terra High for a collaborative branch. A model chosen
 manually for the parent remains the parent model; it does not implicitly erase
 the separate child-resolution order.
 
-At non-Ultra reasoning levels, applicable `AGENTS.md` or skill instructions can
-request delegation, so a user does not need to repeat “use a subagent” in every
-prompt. Ultra can delegate more proactively but is intentionally not the global
-default here because it increases latency and token use.
+Applicable `AGENTS.md` or skill instructions can request delegation without the
+user repeating “use a subagent” in every prompt. This profile deliberately uses
+Ultra as the global parent default so Sol can delegate suitable independent work
+more proactively. That choice favors orchestration quality and completion over
+minimum latency or token use.
+
+Official guidance recommends using the lowest reasoning effort that meets the
+quality bar. This opinionated profile nevertheless keeps every routed Luna leaf
+at Max: Luna remains the lowest-cost GPT-5.6 family model, and this workflow
+prioritizes stronger terminal execution over the marginal saving from lowering
+its effort. That is a repository policy, not a universal OpenAI requirement.
 
 ## Routing gate
 
@@ -155,7 +162,7 @@ tables and never replace the complete file:
 
 ```toml
 model = "gpt-5.6-sol"
-model_reasoning_effort = "max"
+model_reasoning_effort = "ultra"
 
 [features]
 multi_agent = true
@@ -192,7 +199,7 @@ sandbox, authentication, network, MCP, plugin, connector, project-trust,
 service-tier, notification, and explicit per-thread model settings.
 
 Install these native defaults:
-- gpt-5.6-sol with max reasoning for the parent;
+- gpt-5.6-sol with ultra reasoning for the parent;
 - gpt-5.6-luna with max reasoning for ordinary native leaf subagents;
 - max_concurrent_threads_per_session = 8;
 - features.multi_agent = true and agents.enabled = true.
