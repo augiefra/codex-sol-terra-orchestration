@@ -26,7 +26,7 @@ routing instructions installed into a user's Codex configuration.
   verification scripts change.
 - Prefer runtime evidence from `turn_context` over claims inferred from a
   requested model, a role name, or a configuration file.
-- Preserve the core topology: Sol Max owns the parent thread; native Luna Max
+- Preserve the core topology: Sol Ultra owns the parent thread; native Luna Max
   leaf subagents handle independent, bounded work; Terra High is selected only
   for a collaborative branch that needs proactive inter-agent communication,
   recursive delegation, or materially deeper intermediate reasoning.

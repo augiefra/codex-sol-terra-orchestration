@@ -5,7 +5,7 @@
 # Parent-thread default: Sol keeps framing, authority, decisions, review, and
 # final acceptance in one place.
 model = "gpt-5.6-sol"
-model_reasoning_effort = "max"
+model_reasoning_effort = "ultra"
 
 [features]
 # Stable multi-agent collaboration tools.

@@ -10,7 +10,7 @@ None of them makes a configured value proof of the runtime that actually ran.
 
 ## Current baseline
 
-Last maintained check: **2026-08-15**.
+Last maintained check: **2026-08-16**.
 
 | Item | Status | Evidence or required check |
 |---|---|---|
@@ -22,8 +22,8 @@ Last maintained check: **2026-08-15**.
 | Terra can recursively delegate to a Luna leaf | Repository topology expectation | Must pass the conditional Terra-to-Luna smoke test on the target client |
 | Model/effort footer | Reporting convention only | Must be backed by injected metadata or the exact owning rollout |
 
-The maintainer's local static baseline on 2026-08-15 used
-`codex-cli 0.148.0-alpha.9`, parsed the native Sol Max / Luna Max settings, and
+The maintainer's local static baseline on 2026-08-16 used
+`codex-cli 0.148.0-alpha.9`, parsed the native Sol Ultra / Luna Max settings, and
 contained no `multi_agent_v2` key or model-catalog override. This is a dated
 observation, not a minimum-version guarantee.
 

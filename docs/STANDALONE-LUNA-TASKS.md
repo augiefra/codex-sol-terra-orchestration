@@ -5,7 +5,7 @@ expensive in context but simple in coordination. It supplements native
 Sol–Luna–Terra orchestration; it does not replace native Luna leaf agents.
 
 ```text
-Sol Max parent
+Sol Ultra parent
 ├── native Luna Max leaf            bounded terminal work
 ├── Terra High branch lead          collaborative bounded work
 └── separate Luna Max user task     exceptional batch, after approval

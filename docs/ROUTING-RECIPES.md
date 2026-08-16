@@ -73,7 +73,7 @@ Use when assignments do not share write ownership or depend on each other's
 intermediate conclusions.
 
 ```text
-Sol Max parent
+Sol Ultra parent
 ├── Luna A: audit repository A, read-only
 └── Luna B: audit repository B, read-only
 ```

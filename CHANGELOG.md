@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-08-16 — Sol Ultra parent profile
+
+### Changed
+
+- Made Sol Ultra the default parent so architecture threads can proactively
+  delegate suitable independent work.
+- Kept Luna Max as the default native terminal leaf and for every documented
+  Luna execution path.
+- Kept Terra High only for a bounded collaborative branch that must coordinate
+  or recursively delegate.
+- Retained the documented `features.multi_agent` flag and the prohibition on
+  catalog patches and undocumented `multi_agent_v2` configuration.
+
+### Trade-off
+
+- This is an opinionated quality-first profile. It accepts the additional
+  latency and token use of Ultra and Max while preserving the same authority,
+  ownership, validation, and escalation boundaries.
+
 ## 2026-08-15 — native Luna leaf orchestration
 
 ### Changed
